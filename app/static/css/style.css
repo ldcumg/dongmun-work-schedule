@@ -69,6 +69,11 @@ button {
   gap: 4px
 }
 
+#name-input {
+  font-size: 16px;
+  width: 120px;
+}
+
 #day-form label {
   display: flex;
   flex-direction: row;
