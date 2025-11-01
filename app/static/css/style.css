@@ -1,18 +1,93 @@
-:root {
-  --color-primary: #42A89D
+@font-face {
+  font-family: 'Pretendard';
+  src: url('/static/fonts/Pretendard-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
 }
 
-/* html {
-  font-size: clamp(24px, 1.2vw + 0.5vh, 36px);
-} */
+:root {
+  --color-primary: #3FA99D;
+  --color-secondary: #504e49;
+  --color-third: #594743;
+  --color-accent: #D46C4E;
+}
+
+html {
+  font-family: 'Pretendard', sans-serif;
+}
 
 body {
   background-color: var(--color-primary);
   color: white;
+  background-image: url('/static/images/dongmun-image1.jpeg');
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding-bottom: 12px;
+}
+
+h1 {
+  text-align: center;
+  color: white;
 }
 
 h2 {
-  margin-bottom: 0.5rem;
+  margin-bottom: 16px;
+}
+
+h3 {
+  margin: 32px 0 16px 0;
+}
+
+section {
+  border-radius: 16px;
+  opacity: 0.9;
+  padding: 32px;
+}
+
+button {
+  width: 72px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  background-color: var(--color-accent);
+  color: white;
+}
+
+#submit-section {
+  background-color: var(--color-secondary);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#name-form {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 4px
+}
+
+#day-form label {
+  display: flex;
+  flex-direction: row;
+}
+
+#submit-button-container {
+  text-align: right;
+  margin-top: 24px;
+}
+
+#schedule-display-section {
+  background-color: var(--color-third);
+  margin-top: 8px;
+}
+
+#schedule-display-section header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 #day-form>div {
@@ -20,8 +95,9 @@ h2 {
   gap: 1rem;
 }
 
-
-
-#schedule-display-section {
-  margin-top: 2rem;
+#schedule-display-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 16px;
 }
