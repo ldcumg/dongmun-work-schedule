@@ -19,7 +19,7 @@ html {
 body {
   background-color: var(--color-primary);
   color: white;
-  background-image: url('/static/images/dongmun-image1.jpeg');
+  background-image: url('/static/images/background-image.jpeg');
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
