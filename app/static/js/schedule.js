@@ -1,6 +1,5 @@
 import { WEEKDAYS } from './constants.js';
 import { savedName } from './name.js';
-import { renderCheckboxes } from './weekdays.js';
 import { fetchSchedule, resetSchedule } from './apis.js';
 import { getNextWeekRangeFromToday, getPeopleForDay } from './utils.js';
 import { $workdayContainer, $laundryContainer } from './domElements.js';
@@ -9,16 +8,14 @@ const $weekRangeContainer = document.querySelector('#week-range-container');
 const $scheduleContainer = document.querySelector('#schedule-container');
 const $numberWorkContainer = document.querySelector('#work-number-container');
 const $resetScheduleButton = document.querySelector('#reset-schedule-button');
-const $scheduleDisplayContainer = document.getElementById(
-  'schedule-display-container'
-);
+const $scheduleDisplayContainer = document.getElementById('schedule-display');
 const $copyButton = document.getElementById('copy-button');
 
 export const selectedWorkDays = new Set();
 export const selectedLaundryDays = new Set();
 
 /** 선택된 날들을 스케줄 데이터에서 동기화 */
-const syncSelectedDaysFromData = (scheduleData) => {
+export const syncSelectedDaysFromData = (scheduleData) => {
   const data = scheduleData[savedName];
   if (!data) return;
 
@@ -89,12 +86,3 @@ $copyButton.addEventListener('click', () => {
       console.error('복사 실패:', err);
     });
 });
-
-const initializeSchedule = async () => {
-  const scheduleData = await fetchSchedule();
-  syncSelectedDaysFromData(scheduleData);
-  renderCheckboxes();
-  renderSchedule(scheduleData);
-};
-
-window.addEventListener('DOMContentLoaded', initializeSchedule);

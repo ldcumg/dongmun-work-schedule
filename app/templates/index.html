@@ -6,37 +6,46 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>동문 취향 근무</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="icon" sizes="96x96" href="{{ url_for('static', filename='images/favicon-96x96.ico') }}">
+  <link rel="icon" sizes="32x32" href="{{ url_for('static', filename='images/favicon-32x32.ico') }}">
+  <link rel="icon" sizes="16x16" href="{{ url_for('static', filename='images/favicon-16x16.ico') }}">
+  <title>동문 취향 근무표</title>
 </head>
 
 <body>
-  <h1>동문 취향 근무</h1>
-  <form id="name-form">
-    <label for="name-input">이름</label>
-    <input id="name-input" placeholder="두 글자만 입력" />
-    <button type="submit" id="name-button" hidden>수정</button>
-  </form>
-
-  <section>
-    <form id="day-form">
-      <h3>근무</h3>
-      <div id="workday-container">
-      </div>
-
-      <h3>빨래</h3>
-      <div id="laundry-container">
-      </div>
+  <h1>동문 취향 근무표</h1>
+  <section id="submit-section">
+    <form id="name-form">
+      <label for="name-input">이름</label>
+      <input id="name-input" placeholder="두 글자만 입력" />
+      <button type="submit" id="name-button">수정</button>
     </form>
 
-    <button type="button" id="submit-button">제출</button>
+    <div>
+      <form id="day-form">
+        <h3>근무</h3>
+        <div id="workday-container">
+        </div>
+
+        <h3>빨래</h3>
+        <div id="laundry-container">
+        </div>
+      </form>
+
+      <div id="submit-button-container">
+        <button type="button" id="submit-button">제출</button>
+      </div>
+    </div>
   </section>
 
-  <div>
-    <h2>근무표</h2>
-    <button type="button" id="reset-schedule-button">초기화</button>
+  <section id="schedule-display-section">
+    <header>
+      <h2>근무표</h2>
+      <button type="button" id="reset-schedule-button">초기화</button>
+    </header>
 
-    <section id="schedule-display-section">
-      <button type="button" id="copy-button">복사</button>
-      <div id="schedule-display-container">
+    <div id="schedule-display-container">
+      <div id="schedule-display">
         <div id="week-range-container"></div>
         <br />
         <div id="schedule-container"></div>
@@ -44,8 +53,9 @@
         <h3>이번주 근무 일수 ✅</h3>
         <div id="work-number-container"></div>
       </div>
-    </section>
-  </div>
+      <button type="button" id="copy-button">복사</button>
+    </div>
+  </section>
 
   <script type="module" src="{{ url_for('static', filename='js/constants.js') }}"></script>
   <script type="module" src="{{ url_for('static', filename='js/utils.js') }}"></script>
@@ -55,6 +65,7 @@
   <script type="module" src="{{ url_for('static', filename='js/schedule.js') }}"></script>
   <script type="module" src="{{ url_for('static', filename='js/weekdays.js') }}"></script>
   <script type="module" src="{{ url_for('static', filename='js/submit.js') }}"></script>
+  <script type="module" src="{{ url_for('static', filename='js/initialize.js') }}"></script>
 </body>
 
 </html>
