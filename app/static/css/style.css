@@ -55,8 +55,10 @@ button {
   color: white;
 }
 
-footer{
+footer {
   text-align: end;
+  margin-top: 6px;
+  margin-right: 8px;
 }
 
 #submit-section {
