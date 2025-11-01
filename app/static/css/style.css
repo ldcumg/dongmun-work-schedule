@@ -1,12 +1,16 @@
+@font-face {
+  font-family: 'Pretendard';
+  src: url('/app/static/fonts/Pretendard-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+}
+
 :root {
   --color-primary: #42A89D
 }
 
-/* html {
-  font-size: clamp(24px, 1.2vw + 0.5vh, 36px);
-} */
-
 body {
+  font-family: 'Pretendard', sans-serif;
   background-color: var(--color-primary);
   color: white;
 }
