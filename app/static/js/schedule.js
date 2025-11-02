@@ -54,7 +54,7 @@ export const renderSchedule = async (scheduleData) => {
 
 // 근무표 초기화 버튼 이벤트
 $resetScheduleButton.addEventListener('click', async () => {
-  if (!confirm('정말 근무표를 초기화하시겠습니까?')) return;
+  if (!confirm('근무표를 초기화하시겠습니까?')) return;
   await resetSchedule();
   selectedWorkDays.clear();
   selectedLaundryDays.clear();

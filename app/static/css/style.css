@@ -7,7 +7,7 @@
 
 :root {
   --color-primary: #3FA99D;
-  --color-secondary: #504e49;
+  --color-secondary: #504E49;
   --color-third: #594743;
   --color-accent: #D46C4E;
 }
@@ -24,6 +24,13 @@ body {
   background-position: center;
   background-repeat: no-repeat;
   padding-bottom: 12px;
+}
+
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
 }
 
 h1 {
@@ -78,6 +85,9 @@ footer {
 #name-input {
   font-size: 16px;
   width: 120px;
+  border: none;
+  border-radius: 8px;
+  padding: 6px 12px;
 }
 
 #day-form label {
