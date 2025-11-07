@@ -1,25 +1,14 @@
-@font-face {
-  font-family: 'Pretendard';
-  src: url('/static/fonts/Pretendard-Regular.woff2') format('woff2');
-  font-weight: 400;
-  font-style: normal;
-}
-
-:root {
-  --color-primary: #3FA99D;
-  --color-secondary: #504E49;
-  --color-third: #594743;
-  --color-accent: #D46C4E;
-}
+@import './fonsts.css';
+@import './variables.css';
 
 html {
-  font-family: 'Pretendard', sans-serif;
+  font-family: var(--font-main);
 }
 
 body {
   background-color: var(--color-primary);
   color: white;
-  background-image: url('/static/images/dongmun-image-green.jpeg');
+  background-image: url('../assets/images/dongmun-image-green.jpeg');
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
