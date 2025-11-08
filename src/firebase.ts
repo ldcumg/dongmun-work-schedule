@@ -1,13 +1,7 @@
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.5.0/firebase-app.js';
-import {
-  getFirestore,
-  collection,
-} from 'https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore.js';
-import {
-  getDatabase,
-  ref,
-} from 'https://www.gstatic.com/firebasejs/12.5.0/firebase-database.js';
-import { STAFF, SCHEDULE } from './constants.js';
+import { initializeApp } from 'firebase/app';
+import { getFirestore, collection } from 'firebase/firestore';
+import { getDatabase, ref } from 'firebase/database';
+import { STAFF, SCHEDULE } from './constants';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyCE4gJ_ik5NOq7rAW9mWfdd9DIj514PfCk',
@@ -23,7 +17,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 
 export const staffCollection = collection(getFirestore(app), STAFF);
-export const scheduleRef = (name) => {
+export const scheduleRef = (name?: string) => {
   const path = name ? `${SCHEDULE}/${name}` : SCHEDULE;
   return ref(getDatabase(app), path);
 };

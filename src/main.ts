@@ -1,18 +1,18 @@
-import { onValue } from 'https://www.gstatic.com/firebasejs/12.5.0/firebase-database.js';
-import { scheduleRef } from './firebase.js';
-import { loadLsSavedName } from './name.js';
-import { syncSelectedDaysFromData, renderSchedule } from './schedule.js';
+import { onValue, DataSnapshot } from 'firebase/database';
+import { scheduleRef } from './firebase';
+import { loadLsSavedName } from './name';
+import { syncSelectedDaysFromData, renderSchedule } from './schedule';
 import {
   setNameEvent,
   handleSubmitEvent,
   resetScheduleEvent,
   copyScheduleEvent,
-} from './dom/events.js';
+} from './dom/events';
 
 window.addEventListener('DOMContentLoaded', () => {
   let isInitial = true;
 
-  onValue(scheduleRef(), (snapshot) => {
+  onValue(scheduleRef(), (snapshot: DataSnapshot) => {
     const scheduleData = snapshot.val();
 
     if (isInitial) {

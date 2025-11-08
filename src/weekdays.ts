@@ -1,4 +1,9 @@
-export const createCheckbox = (day, selectedDays) => {
+import type { SelectedDaysValue, Weekday } from './type';
+
+export const createCheckbox = (
+  day: Weekday,
+  selectedDays: SelectedDaysValue
+) => {
   const label = document.createElement('label');
   const checkbox = document.createElement('input');
   checkbox.type = 'checkbox';

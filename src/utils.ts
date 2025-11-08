@@ -1,3 +1,5 @@
+import type { ScheduleData, SelectedDaysKey, Weekday } from './type';
+
 export function getNextWeekRangeFromToday() {
   const today = new Date();
   const day = today.getDay(); // 일:0, 월:1, ... 토:6
@@ -20,7 +22,11 @@ export function getNextWeekRangeFromToday() {
 //     .map(([name]) => name);
 // }
 
-export function getPeopleForDay(scheduleData, category, day) {
+export function getPeopleForDay(
+  scheduleData: ScheduleData,
+  category: SelectedDaysKey,
+  day: Weekday
+) {
   const people = [];
   for (let name in scheduleData) {
     if (!scheduleData.hasOwnProperty(name)) continue;
