@@ -1,7 +1,7 @@
 import { onValue, DataSnapshot } from 'firebase/database';
 import { scheduleRef } from './firebase';
-import { loadLsSavedName } from './features/name';
-import { syncSelectedDaysFromData, renderSchedule } from './schedule';
+import { loadSavedName } from './features/name';
+import { syncSelectedDaysFromData, renderSchedule } from './features/schedule';
 import {
   setNameEvent,
   handleSubmitEvent,
@@ -9,7 +9,6 @@ import {
   copyScheduleEvent,
   renderWeekRange,
 } from './dom/events';
-import { createModal } from './components/modal';
 
 window.addEventListener('DOMContentLoaded', () => {
   let isInitial = true;
@@ -23,15 +22,8 @@ window.addEventListener('DOMContentLoaded', () => {
     }
     renderSchedule(scheduleData);
   });
-  document.getElementById('test-button')?.addEventListener('click', () => {
-    createModal([
-      { label: '버튼 1', onClick: () => console.log('버튼 1 클릭') },
-      { label: '버튼 2', onClick: () => console.log('버튼 2 클릭') },
-      { label: '버튼 3', onClick: () => console.log('버튼 3 클릭') },
-    ]);
-  });
 
-  loadLsSavedName();
+  loadSavedName();
   setNameEvent();
   handleSubmitEvent();
   resetScheduleEvent();

@@ -17,7 +17,7 @@ export function getNextWeekRangeFromToday() {
 }
 
 // export function getPeopleForDay(scheduleData, category, day) {
-//   return Object.entries(scheduleData)
+//   return Object.entries(scheduleData)ㄷ
 //     .filter(([name, selectedDays]) => selectedDays[category].includes(day))
 //     .map(([name]) => name);
 // }

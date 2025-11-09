@@ -1,7 +1,7 @@
 import { WEEKDAYS } from '../constants';
 import { $nameInput, $workdayContainer, $laundryContainer } from './elements';
-import { createCheckbox } from '../weekdays';
-import { setEditingState, saveLsName } from '../features/name';
+import { createCheckbox } from '../features/weekdays';
+import { setEditingState, saveName } from '../features/name';
 import { submitSelectedDays, resetSchedule } from '../api';
 import { getNextWeekRangeFromToday } from '../utils';
 import {
@@ -14,7 +14,7 @@ import {
   resetSelectedDays,
 } from '../store';
 
-const $nameForm = document.querySelector('#name-form');
+const $nameForm = document.querySelector('#name-container');
 const $submitScheduleButton = document.querySelector('#submit-button');
 const $weekRangeContainer = document.querySelector('#week-range-container');
 const $resetScheduleButton = document.querySelector('#reset-schedule-button');
@@ -31,7 +31,7 @@ export const setNameEvent = () => {
           // $nameInput.value = '';
           setEditingState(true);
         } else {
-          saveLsName();
+          saveName();
         }
     });
 };
@@ -90,7 +90,7 @@ export const handleSubmitEvent = () => {
         if (!$nameInput.value) return alert('이름을 입력해주세요');
         if ($nameInput.value.length !== 2)
           return alert('이름을 두 글자로 입력해주세요');
-        saveLsName();
+        saveName();
         await submitSelectedDays($nameInput.value);
       }
     });

@@ -1,7 +1,8 @@
 import { $nameInput } from '../dom/elements';
 import { STAFF_NAME } from '../constants';
 
-const $nameButton = document.querySelector('#name-button');
+const $name = document.querySelector('#name');
+const $nameButton = document.querySelector('#name-select-button');
 
 export const getSavedName = () => localStorage.getItem(STAFF_NAME);
 
@@ -14,17 +15,13 @@ export const setEditingState = (isEditing: boolean) => {
     $nameButton.textContent = isEditing ? '저장' : '수정';
 };
 
-export const loadLsSavedName = () => {
+export const loadSavedName = () => {
   const savedName = getSavedName();
-  if (savedName && $nameInput instanceof HTMLInputElement) {
-    $nameInput.value = savedName;
-    setEditingState(false);
-  } else {
-    setEditingState(true);
-  }
+  if ($name instanceof HTMLSpanElement && savedName)
+    $name.textContent = savedName;
 };
 
-export const saveLsName = () => {
+export const saveName = () => {
   if ($nameInput instanceof HTMLInputElement) {
     const name = $nameInput.value.trim();
     if (!name) return;
