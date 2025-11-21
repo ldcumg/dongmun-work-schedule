@@ -9,6 +9,7 @@ import {
 } from 'firebase/firestore';
 import { db, staffCollection } from '../firebase';
 import { Firebase, NEWBIE } from '../constants';
+import { createEl } from '../utils';
 
 /** DB에 신입 추가 */
 const dbAddNewbie = async (staffContainer: HTMLDivElement) => {
@@ -23,11 +24,12 @@ const dbAddNewbie = async (staffContainer: HTMLDivElement) => {
 
 export const attachNewbie = async (targetNode: HTMLDivElement) => {
   const name = await dbAddNewbie(targetNode);
-  const staffButton = document.createElement('button');
-  staffButton.type = 'button';
-  staffButton.className = 'staff-button';
-  staffButton.id = name;
-  staffButton.textContent = name;
+  const staffButton = createEl('button', {
+    type: 'button',
+    className: 'staff-button',
+    id: name,
+    textContent: name,
+  });
   targetNode.appendChild(staffButton);
 };
 
