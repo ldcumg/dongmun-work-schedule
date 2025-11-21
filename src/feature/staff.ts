@@ -56,7 +56,7 @@ export const editStaff = async (
   await operateStaffByName(targetName, (docId) =>
     updateDoc(doc(db, Firebase.STAFF, docId), { name: newName })
   );
-  target.value = newName;
+  target.textContent = newName;
 };
 
 export const removeStaffByName = async (
