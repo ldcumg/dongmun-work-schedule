@@ -1,13 +1,12 @@
 import {
   deleteDoc,
-  doc,
   getDocs,
   query,
   setDoc,
   updateDoc,
   where,
 } from 'firebase/firestore';
-import { db, staffCollection } from '../firebase';
+import { staffCollection, staffDoc } from '../firebase';
 import { Firebase, NEWBIE } from '../constants';
 import { createEl } from '../utils';
 
@@ -16,9 +15,10 @@ const dbAddNewbie = async (staffContainer: HTMLDivElement) => {
   const duplicates = Array.from(
     staffContainer.querySelectorAll<HTMLButtonElement>('.staff-button')
   ).filter((btn) => btn.textContent.startsWith(NEWBIE)).length;
-
   const name = duplicates > 0 ? `${NEWBIE}${duplicates + 1}` : NEWBIE;
-  await setDoc(doc(staffCollection), { name, workDays: {} });
+  const staffId = new Date().getTime().toString();
+
+  await setDoc(staffDoc(staffId), { name, workDays: {} });
   return name;
 };
 
@@ -54,7 +54,7 @@ export const editStaff = async (
   target: HTMLButtonElement
 ) => {
   await operateStaffByName(targetName, (docId) =>
-    updateDoc(doc(db, Firebase.STAFF, docId), { name: newName })
+    updateDoc(staffDoc(docId), { name: newName })
   );
   target.textContent = newName;
 };
@@ -63,8 +63,6 @@ export const removeStaffByName = async (
   targetName: string,
   target: HTMLButtonElement
 ) => {
-  await operateStaffByName(targetName, (docId) =>
-    deleteDoc(doc(db, Firebase.STAFF, docId))
-  );
+  await operateStaffByName(targetName, (docId) => deleteDoc(staffDoc(docId)));
   target.remove();
 };
