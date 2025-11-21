@@ -6,8 +6,13 @@ import {
   toggleStaffButtonClass,
 } from '../utils';
 import { selectDay, deselectDay, clearSelectedDays } from '../store';
-import { clearSavedName, saveName } from '../feature/name';
-import { attachNewbie, editStaff, removeStaffByName } from '../feature/staff';
+import {
+  attachNewbie,
+  removeSavedStaff,
+  editStaff,
+  removeStaffByName,
+  saveStaff,
+} from '../feature/staff';
 import {
   createApplyWorkContainer,
   createStaffSelectContainer,
@@ -16,8 +21,8 @@ import { SelectedDaysKey } from '../constants';
 import { renderTotalWorkDays } from './render';
 
 export const delegateStaffEvents = (parentNode: HTMLElement) => {
-  let editMode = false;
-  let deleteMode = false;
+  let editMode: boolean = false;
+  let deleteMode: boolean = false;
   let editingTarget: HTMLButtonElement | null = null;
 
   parentNode.addEventListener('click', async (e) => {
@@ -68,6 +73,8 @@ export const delegateStaffEvents = (parentNode: HTMLElement) => {
       target instanceof HTMLButtonElement &&
       target.classList.contains('staff-button')
     ) {
+      const docId = target.dataset.docId!;
+
       if (editMode) {
         const nameForm = getElement('#name-form', HTMLFormElement);
         const nameInput = getElement('#name-input', HTMLInputElement);
@@ -80,15 +87,16 @@ export const delegateStaffEvents = (parentNode: HTMLElement) => {
 
       if (deleteMode) {
         if (confirm(`${target.textContent}을(를) 삭제하시겠습니까?`)) {
-          await removeStaffByName(target.textContent, target);
+          await removeStaffByName(docId);
+          target.remove();
           deleteMode = false;
           clearStaffButtonClasses(staffButtons, 'delete');
         }
         return;
       }
 
-      saveName(target.textContent);
-      createApplyWorkContainer(target.textContent).then((el) =>
+      saveStaff(target.textContent, docId);
+      createApplyWorkContainer(target.textContent, docId).then((el) =>
         parentNode.replaceChildren(el)
       );
     }
@@ -105,7 +113,8 @@ export const delegateStaffEvents = (parentNode: HTMLElement) => {
     const newName = nameInput.value.trim();
     if (!newName) return;
 
-    await editStaff(editingTarget.textContent, newName, editingTarget);
+    await editStaff(editingTarget.dataset.docId!, newName);
+    editingTarget.textContent = newName;
     nameInput.value = '';
     editingTarget.classList.remove('editing');
     editingTarget = null;
@@ -125,7 +134,7 @@ export const delegateSubmitEvents = (parentNode: HTMLElement) => {
       target instanceof HTMLInputElement &&
       target.id === 'staff-change-button'
     ) {
-      clearSavedName();
+      removeSavedStaff();
       clearSelectedDays();
       const staffs = await fetchStaffs();
       createStaffSelectContainer(staffs).then((el) =>
@@ -177,7 +186,7 @@ export const delegateSubmitEvents = (parentNode: HTMLElement) => {
     const name = getElement('#name', HTMLSpanElement);
     if (!name.textContent) return alert('스탭을 선택해주세요');
 
-    await submitSelectedDays(name.textContent);
+    await submitSelectedDays(name.textContent, name.dataset.docId!);
 
     const cumulationContainer = getElement(
       '#cumulation-container',

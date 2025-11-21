@@ -1,68 +1,46 @@
-import {
-  deleteDoc,
-  getDocs,
-  query,
-  setDoc,
-  updateDoc,
-  where,
-} from 'firebase/firestore';
-import { staffCollection, staffDoc } from '../firebase';
-import { Firebase, NEWBIE } from '../constants';
+import { STAFF } from '../constants';
+import { deleteDoc, setDoc, updateDoc } from 'firebase/firestore';
+import { staffDoc } from '../firebase';
+import { NEWBIE } from '../constants';
 import { createEl } from '../utils';
 
+export const saveStaff = (name: string, docId: string) =>
+  localStorage.setItem(STAFF, JSON.stringify({ name, docId }));
+
+export const getSavedStaff = () => {
+  const staffData = localStorage.getItem(STAFF);
+  return staffData ? JSON.parse(staffData) : null;
+};
+
+export const removeSavedStaff = () => localStorage.removeItem(STAFF);
+
 /** DB에 신입 추가 */
-const dbAddNewbie = async (staffContainer: HTMLDivElement) => {
+const dbAddNewbie = async (staffContainer: HTMLDivElement, docId: string) => {
   const duplicates = Array.from(
     staffContainer.querySelectorAll<HTMLButtonElement>('.staff-button')
   ).filter((btn) => btn.textContent.startsWith(NEWBIE)).length;
   const name = duplicates > 0 ? `${NEWBIE}${duplicates + 1}` : NEWBIE;
-  const staffId = new Date().getTime().toString();
 
-  await setDoc(staffDoc(staffId), { name, workDays: {} });
+  await setDoc(staffDoc(docId), { name, workDays: {} });
   return name;
 };
 
 export const attachNewbie = async (staffContainer: HTMLDivElement) => {
-  const name = await dbAddNewbie(staffContainer);
+  const docId = new Date().getTime().toString();
+  const name = await dbAddNewbie(staffContainer, docId);
   const staffButton = createEl('button', {
     type: 'button',
     className: 'staff-button',
-    id: name,
     textContent: name,
+    dataset: { docId },
   });
   staffContainer.appendChild(staffButton);
 };
 
-export const operateStaffByName = async (
-  name: string,
-  callback: (docSnapId: string) => Promise<void>
-) => {
-  const q = query(staffCollection, where(Firebase.NAME, '==', name));
-  const snapshot = await getDocs(q);
-  if (snapshot.empty) {
-    alert('대상 스탭이 없습니다.');
-    return;
-  }
-  await Promise.allSettled(
-    snapshot.docs.map((docSnap) => callback(docSnap.id))
-  );
+export const editStaff = async (targetId: string, newName: string) => {
+  await updateDoc(staffDoc(targetId), { name: newName });
 };
 
-export const editStaff = async (
-  targetName: string,
-  newName: string,
-  target: HTMLButtonElement
-) => {
-  await operateStaffByName(targetName, (docId) =>
-    updateDoc(staffDoc(docId), { name: newName })
-  );
-  target.textContent = newName;
-};
-
-export const removeStaffByName = async (
-  targetName: string,
-  target: HTMLButtonElement
-) => {
-  await operateStaffByName(targetName, (docId) => deleteDoc(staffDoc(docId)));
-  target.remove();
+export const removeStaffByName = async (targetId: string) => {
+  await deleteDoc(staffDoc(targetId));
 };

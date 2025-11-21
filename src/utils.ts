@@ -1,0 +1,135 @@
+import { WEEKDAYS } from './constants';
+import type { ScheduleData, SelectedDaysKey, Weekday } from './types';
+
+export function createEl<K extends keyof HTMLElementTagNameMap>(
+  tag: K,
+  options?: Partial<HTMLElementTagNameMap[K]> & {
+    dataset?: Record<string, string>;
+  }
+) {
+  const el = document.createElement(tag);
+
+  if (options) {
+    const { dataset, ...rest } = options;
+    Object.assign(el, rest);
+
+    if (dataset) {
+      for (const key in dataset) {
+        el.dataset[key] = dataset[key];
+      }
+    }
+  }
+
+  return el;
+}
+
+export function getElement<T extends HTMLElement>(
+  selector: string,
+  type: new () => T
+): T {
+  const el = document.querySelector(selector);
+  if (!(el instanceof type))
+    throw new Error(`${selector} 요소를 찾을 수 없습니다`);
+
+  return el;
+}
+
+export function createSvgPath(fileName: string) {
+  return `/assets/icons/${fileName}.svg`;
+}
+
+export function clearStaffButtonClasses(
+  buttons: NodeListOf<HTMLInputElement>,
+  ...classes: string[]
+) {
+  buttons.forEach((btn) => classes.forEach((cls) => btn.classList.remove(cls)));
+}
+
+export function toggleStaffButtonClass(
+  buttons: NodeListOf<HTMLInputElement>,
+  className: string,
+  condition: boolean
+) {
+  buttons.forEach((btn) => {
+    if (condition) btn.classList.add(className);
+    else btn.classList.remove(className);
+  });
+}
+
+export function isWeekday(v: string | undefined): v is Weekday {
+  if (!v) return false;
+  return (WEEKDAYS as readonly string[]).includes(v);
+}
+
+/** 이번 주 월요일 구하기 */
+function getMonday(date: Date): Date {
+  const d = new Date(date);
+  const day = d.getDay(); // 0: 일요일
+  const diffToMonday = day === 0 ? -6 : 1 - day;
+  d.setDate(d.getDate() + diffToMonday);
+  d.setHours(0, 0, 0, 0);
+  return d;
+}
+
+/** 일요일 16시 이후인지 체크 */
+function isAfterSunday4PM(date: Date): boolean {
+  const monday = getMonday(date);
+  const sunday4PM = new Date(monday);
+  sunday4PM.setDate(monday.getDate() + 6);
+  sunday4PM.setHours(16, 0, 0, 0);
+  return date >= sunday4PM;
+}
+
+/** 주간 범위 반환 */
+function getWeekRange(baseMonday: Date): [Date, Date] {
+  const monday = new Date(baseMonday);
+  const sunday = new Date(baseMonday);
+  sunday.setDate(baseMonday.getDate() + 6);
+  return [monday, sunday];
+}
+
+/** 일요일 16시를 기준으로 주간 범위 반환 */
+export function getSmartWeekRange(): [Date, Date] {
+  const date = new Date();
+  const thisWeekMonday = getMonday(date);
+  const nextWeekMonday = new Date(thisWeekMonday);
+  nextWeekMonday.setDate(thisWeekMonday.getDate() + 7);
+
+  return isAfterSunday4PM(date)
+    ? getWeekRange(nextWeekMonday) // 다음 주
+    : getWeekRange(thisWeekMonday); // 이번 주
+}
+
+/**
+ * 주차 키 반환
+ * @example "2023-W15"
+ *  */
+export function getWeekKey(): string {
+  // Smart Week를 기준으로 계산
+  const [weekMonday] = getSmartWeekRange();
+  const tempDate = new Date(weekMonday.getTime());
+
+  // ISO 주차 계산
+  tempDate.setDate(tempDate.getDate() + 4 - (tempDate.getDay() || 7));
+  const year = tempDate.getFullYear();
+  const firstDayOfYear = new Date(year, 0, 1);
+
+  const week = Math.ceil(
+    ((tempDate.getTime() - firstDayOfYear.getTime()) / 86400000 + 1) / 7
+  );
+
+  return `${year}-W${week}`;
+}
+
+export function getPeopleForDay(
+  scheduleData: ScheduleData,
+  category: SelectedDaysKey,
+  day: Weekday
+) {
+  const people = [];
+  for (let name in scheduleData) {
+    if (!scheduleData.hasOwnProperty(name)) continue;
+    if (scheduleData[name][category]?.includes(day)) people.push(name);
+  }
+  return people;
+}

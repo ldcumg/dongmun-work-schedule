@@ -14,12 +14,12 @@ import {
   renderWeekRange,
 } from './dom/render';
 import { initUI } from './dom/init';
-import { getSavedName } from './feature/name';
 import {
   createApplyWorkContainer,
   createStaffSelectContainer,
 } from './dom/elements';
 import { fetchStaffs } from './api';
+import { getSavedStaff } from './feature/staff';
 
 window.addEventListener('DOMContentLoaded', async () => {
   const {
@@ -34,11 +34,14 @@ window.addEventListener('DOMContentLoaded', async () => {
   } = initUI();
 
   let init = true;
-  let savedName = getSavedName();
+  let savedStaff = getSavedStaff();
   const staffs = await fetchStaffs();
 
-  if (savedName) {
-    const applyWorkContainer = await createApplyWorkContainer(savedName);
+  if (savedStaff) {
+    const applyWorkContainer = await createApplyWorkContainer(
+      savedStaff.name,
+      savedStaff.docId
+    );
     selectSection.appendChild(applyWorkContainer);
   } else {
     const staffSelectContainer = await createStaffSelectContainer(staffs);
@@ -56,7 +59,8 @@ window.addEventListener('DOMContentLoaded', async () => {
   onValue(scheduleRef(), async (snapshot: DataSnapshot) => {
     const scheduleData = snapshot.val();
     renderSchedule(scheduleContainer, numberWorkContainer, scheduleData);
-    init ? (init = false) : (savedName = getSavedName());
-    savedName && syncSelectedDays(savedName, scheduleData), renderCheckboxes();
+    init ? (init = false) : (savedStaff = getSavedStaff());
+    savedStaff && syncSelectedDays(savedStaff.name, scheduleData),
+      renderCheckboxes();
   });
 });

@@ -44,12 +44,12 @@ export const createStaffSelectContainer = async (staffs: Staff[]) => {
     SVG_ICON_PATH.trash,
   ]);
 
-  staffs.forEach(({ name }) => {
+  staffs.forEach(({ name, docId }) => {
     const staffButton = createEl('button', {
       type: 'button',
       className: 'staff-button',
-      id: name,
       textContent: name,
+      dataset: { docId },
     });
     staffContainer.appendChild(staffButton);
   });
@@ -58,12 +58,19 @@ export const createStaffSelectContainer = async (staffs: Staff[]) => {
   return staffSelectContainer;
 };
 
-export const createApplyWorkContainer = async (staffName: string) => {
+export const createApplyWorkContainer = async (
+  staffName: string,
+  docId: string
+) => {
   const applyWorkContainer = createEl('div', { id: 'apply-work-container' });
   const nameContainer = createEl('div', { id: 'name-container' });
 
   const nameSign = createEl('span', { textContent: '이름 :' });
-  const nameSpan = createEl('span', { id: 'name', textContent: staffName });
+  const nameSpan = createEl('span', {
+    id: 'name',
+    textContent: staffName,
+    dataset: { docId },
+  });
   const staffChangeButton = createEl('input', {
     type: 'button',
     id: 'staff-change-button',
