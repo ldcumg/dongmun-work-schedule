@@ -1,32 +1,58 @@
 import { onValue, DataSnapshot } from 'firebase/database';
 import { scheduleRef } from './firebase';
-import { loadLsSavedName } from './name';
-import { syncSelectedDaysFromData, renderSchedule } from './schedule';
+import { syncSelectedDays } from './feature/schedule';
 import {
-  setNameEvent,
-  handleSubmitEvent,
-  resetScheduleEvent,
-  copyScheduleEvent,
-  renderWeekRange,
+  delegateStaffEvents,
+  delegateSubmitEvents,
+  bindResetScheduleEvent,
+  bindCopyScheduleEvent,
 } from './dom/events';
+import {
+  renderCheckboxes,
+  renderSchedule,
+  renderWeekRange,
+} from './dom/render';
+import { initUI } from './dom/init';
+import { getSavedName } from './feature/name';
+import { getElement } from './utils';
+import {
+  createApplyWorkContainer,
+  createStaffSelectContainer,
+} from './dom/elements';
 
 window.addEventListener('DOMContentLoaded', () => {
-  let isInitial = true;
+  const {
+    selectSection,
+    scheduleDisplay,
+    weekRangeContainer,
+    scheduleContainer,
+    resetScheduleButton,
+    numberWorkContainer,
+    copyButton,
+  } = initUI();
+
+  const savedName = getSavedName();
 
   onValue(scheduleRef(), (snapshot: DataSnapshot) => {
     const scheduleData = snapshot.val();
-
-    if (isInitial) {
-      syncSelectedDaysFromData(scheduleData);
-      isInitial = false;
+    renderSchedule(scheduleContainer, numberWorkContainer, scheduleData);
+    if (savedName) {
+      const workDayContainer = getElement('#workday-container', HTMLDivElement);
+      const laundryContainer = getElement('#laundry-container', HTMLDivElement);
+      syncSelectedDays(savedName, scheduleData);
+      renderCheckboxes(workDayContainer, laundryContainer);
     }
-    renderSchedule(scheduleData);
   });
+  if (savedName) {
+    selectSection.appendChild(createApplyWorkContainer(savedName));
+  } else {
+    createStaffSelectContainer().then((el) => selectSection.appendChild(el));
+  }
+  renderWeekRange(weekRangeContainer);
 
-  loadLsSavedName();
-  setNameEvent();
-  handleSubmitEvent();
-  resetScheduleEvent();
-  renderWeekRange();
-  copyScheduleEvent();
+  delegateStaffEvents(selectSection);
+  delegateSubmitEvents(selectSection);
+
+  bindResetScheduleEvent(resetScheduleButton);
+  bindCopyScheduleEvent(copyButton, scheduleDisplay);
 });

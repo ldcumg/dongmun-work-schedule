@@ -1,6 +1,20 @@
 @import './fonts.css';
 @import './variables.css';
 
+@keyframes shake {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  50% {
+    transform: rotate(3deg);
+  }
+
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
 html {
   font-family: var(--font-main);
 }
@@ -12,6 +26,8 @@ body {
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
+  background-attachment: fixed;
+  margin: 8px 4vw;
   padding-bottom: 12px;
 }
 
@@ -42,12 +58,19 @@ section {
 }
 
 button,
-.button {
+input[type="button"],
+input[type="submit"],
+input[type="checkbox"] {
+  cursor: pointer;
+}
+
+button,
+input[type="button"],
+input[type="submit"] {
   width: 72px;
   padding: 8px 16px;
   border: none;
   border-radius: 8px;
-  cursor: pointer;
   background-color: var(--color-accent);
   color: white;
 }
@@ -58,26 +81,42 @@ footer {
   margin-right: 8px;
 }
 
-#submit-section {
+.checkbox-label {
+  cursor: pointer;
+}
+
+
+.edit {
+  animation: shake 0.25s ease-in-out infinite;
+
+}
+
+.delete {
+  animation: shake 0.25s ease-in-out infinite;
+
+}
+
+#select-section {
   background-color: var(--color-secondary);
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-#name-form {
+#apply-work-container {
+  width: 100%;
+}
+
+#name-container {
   display: flex;
   flex-direction: row;
   align-items: center;
   gap: 4px
 }
 
-#name-input {
-  font-size: 16px;
-  width: 120px;
-  border: none;
-  border-radius: 8px;
-  padding: 6px 12px;
+#name {
+  font-size: 24px;
+  padding: 0 32px;
 }
 
 #day-form label {

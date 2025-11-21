@@ -1,3 +1,5 @@
+import { createSvgPath } from './utils';
+
 export const WEEKDAYS = Object.freeze([
   '월',
   '화',
@@ -8,7 +10,19 @@ export const WEEKDAYS = Object.freeze([
   '일',
 ] as const);
 
+export const SVG_ICON_PATH = Object.freeze({
+  check: createSvgPath('check'),
+  plus: createSvgPath('plus'),
+  edit: createSvgPath('edit'),
+  trash: createSvgPath('trash'),
+  x: createSvgPath('circle-x'),
+} as const);
+
+export enum Firebase {
+  STAFF = 'staff',
+  NAME = 'name',
+  SCHEDULE = 'schedule',
+}
 export const STAFF_NAME = 'staffName' as const;
 
-export const STAFF = 'staff' as const;
-export const SCHEDULE = 'schedule' as const;
+export const NEWBIE = '신입';

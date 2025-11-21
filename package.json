@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "watch": "esbuild src/main.ts --bundle --minify --outfile=public/dist/main.js --watch",
     "typecheck": "tsgo --noEmit",
     "build:bundle": "esbuild src/main.ts --bundle --minify --outfile=public/dist/main.js",
     "build": "pnpm run typecheck && pnpm run build:bundle",

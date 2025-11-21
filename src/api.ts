@@ -1,6 +1,11 @@
+import { getDocs } from 'firebase/firestore';
 import { update, remove } from 'firebase/database';
-import { scheduleRef } from './firebase';
+import { scheduleRef, staffCollection } from './firebase';
 import { getSelectedLaundryDays, getSelectedWorkDays } from './store';
+
+export const fetchStaffs = async () => {
+  return (await getDocs(staffCollection)).docs.map((doc) => doc.data());
+};
 
 /** 근무 제출 */
 export const submitSelectedDays = async (name: string) => {
