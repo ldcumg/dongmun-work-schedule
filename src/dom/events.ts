@@ -198,7 +198,7 @@ export const bindCopyScheduleEvent = (
   target: HTMLDivElement
 ) => {
   button.addEventListener('click', () => {
-    let textToCopy = target.innerText.replace(/\n{3,}/g, '\n\n');
+    const textToCopy = target.innerText.replace(/\n{3,}/g, '\n\n');
 
     navigator.clipboard
       .writeText(textToCopy)
