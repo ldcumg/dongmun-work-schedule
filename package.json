@@ -1,0 +1,24 @@
+{
+  "name": "dongmun-work-schedule",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "watch": "esbuild src/main.ts --bundle --minify --outfile=public/dist/main.js --watch",
+    "typecheck": "tsgo --noEmit",
+    "build:bundle": "esbuild src/main.ts --bundle --minify --outfile=public/dist/main.js",
+    "build": "pnpm run typecheck && pnpm run build:bundle",
+    "deploy": "pnpm run build && firebase deploy"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.20.0",
+  "devDependencies": {
+    "@typescript/native-preview": "7.0.0-dev.20251108.1",
+    "esbuild": "^0.25.12"
+  },
+  "dependencies": {
+    "firebase": "^12.6.0"
+  }
+}

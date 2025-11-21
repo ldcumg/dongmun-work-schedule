@@ -14,23 +14,23 @@ import { createEl } from '../utils';
 /** DB에 신입 추가 */
 const dbAddNewbie = async (staffContainer: HTMLDivElement) => {
   const duplicates = Array.from(
-    staffContainer.querySelectorAll<HTMLInputElement>('.staff-button')
-  ).filter((btn) => btn.value.startsWith(NEWBIE)).length;
+    staffContainer.querySelectorAll<HTMLButtonElement>('.staff-button')
+  ).filter((btn) => btn.textContent.startsWith(NEWBIE)).length;
 
   const name = duplicates > 0 ? `${NEWBIE}${duplicates + 1}` : NEWBIE;
   await setDoc(doc(staffCollection), { name, workDays: {} });
   return name;
 };
 
-export const attachNewbie = async (targetNode: HTMLDivElement) => {
-  const name = await dbAddNewbie(targetNode);
+export const attachNewbie = async (staffContainer: HTMLDivElement) => {
+  const name = await dbAddNewbie(staffContainer);
   const staffButton = createEl('button', {
     type: 'button',
     className: 'staff-button',
     id: name,
     textContent: name,
   });
-  targetNode.appendChild(staffButton);
+  staffContainer.appendChild(staffButton);
 };
 
 export const operateStaffByName = async (
