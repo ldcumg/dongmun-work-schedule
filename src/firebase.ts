@@ -1,7 +1,7 @@
 import { initializeApp } from 'firebase/app';
 import { getFirestore, collection } from 'firebase/firestore';
 import { getDatabase, ref } from 'firebase/database';
-import { STAFF, SCHEDULE } from './constants';
+import { Firebase } from './constants';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyCE4gJ_ik5NOq7rAW9mWfdd9DIj514PfCk',
@@ -16,8 +16,9 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 
-export const staffCollection = collection(getFirestore(app), STAFF);
+export const db = getFirestore(app);
+export const staffCollection = collection(db, Firebase.STAFF);
 export const scheduleRef = (name?: string) => {
-  const path = name ? `${SCHEDULE}/${name}` : SCHEDULE;
+  const path = name ? `${Firebase.SCHEDULE}/${name}` : Firebase.SCHEDULE;
   return ref(getDatabase(app), path);
 };
