@@ -136,8 +136,13 @@ footer {
   align-items: center;
 }
 
+#apply-work-container {
+  overflow-x: auto;
+}
+
 #staff-select-container {
   gap: 16px;
+  padding: 0 16px;
 }
 
 #control-container {
@@ -148,10 +153,6 @@ footer {
   align-items: center;
 }
 
-#name-form {
-  margin-left: 20px;
-}
-
 #name-input {
   width: 120px;
   margin-right: 4px;
@@ -159,7 +160,6 @@ footer {
 
 #svg-container {
   margin-left: auto;
-  margin-right: 20px;
   display: flex;
   gap: 12px;
 }
@@ -177,10 +177,16 @@ footer {
 }
 
 #staff-container {
+  width: 100%;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: repeat(auto-fit, minmax(96px, 1fr));
+  justify-items: center;
   gap: 12px;
   margin: 20px 0;
+}
+
+#day-form {
+  width: 100%;
 }
 
 #day-form label {

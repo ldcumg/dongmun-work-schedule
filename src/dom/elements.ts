@@ -100,10 +100,7 @@ export const createApplyWorkContainer = async (staffName: string) => {
     submitButtonContainer
   );
 
-  const div = createEl('div');
-  div.appendChild(dayForm);
-
-  applyWorkContainer.append(nameContainer, div);
+  applyWorkContainer.append(nameContainer, dayForm);
   return applyWorkContainer;
 };
 
