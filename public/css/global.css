@@ -209,7 +209,7 @@ footer {
 
 #day-form>div {
   display: flex;
-  gap: 1rem;
+  gap: 5vw;
 }
 
 #schedule-display-container {
