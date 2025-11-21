@@ -32,6 +32,7 @@ export const delegateStaffEvents = (parentNode: HTMLElement) => {
     // SVG 클릭 처리
     svgs.forEach(async (svg, index) => {
       if (!svg.contains(target)) return;
+      const nameForm = getElement('#name-form', HTMLFormElement);
 
       switch (index) {
         case 0: // 추가
@@ -48,16 +49,16 @@ export const delegateStaffEvents = (parentNode: HTMLElement) => {
         case 1: // 편집
           deleteMode = false;
           editMode = !editMode;
-          clearStaffButtonClasses(staffButtons, 'delete');
+          clearStaffButtonClasses(staffButtons, 'delete', 'editing');
           toggleStaffButtonClass(staffButtons, 'edit', editMode);
-          const nameForm = getElement('#name-form', HTMLFormElement);
-          nameForm.hidden = true;
+          nameForm.hidden || (nameForm.hidden = true);
           break;
         case 2: // 삭제
           editMode = false;
           deleteMode = !deleteMode;
-          clearStaffButtonClasses(staffButtons, 'edit');
+          clearStaffButtonClasses(staffButtons, 'edit', 'editing');
           toggleStaffButtonClass(staffButtons, 'delete', deleteMode);
+          nameForm.hidden || (nameForm.hidden = true);
           break;
       }
     });
@@ -72,6 +73,7 @@ export const delegateStaffEvents = (parentNode: HTMLElement) => {
         const nameInput = getElement('#name-input', HTMLInputElement);
         nameForm.hidden = false;
         nameInput.focus();
+        target.classList.add('editing');
         editingTarget = target;
         return;
       }
@@ -105,6 +107,7 @@ export const delegateStaffEvents = (parentNode: HTMLElement) => {
 
     await editStaff(editingTarget.textContent, newName, editingTarget);
     nameInput.value = '';
+    editingTarget.classList.remove('editing');
     editingTarget = null;
     form.hidden = true;
     clearStaffButtonClasses(

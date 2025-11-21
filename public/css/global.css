@@ -104,6 +104,10 @@ footer {
   cursor: pointer;
 }
 
+.editing {
+  opacity: 0.7;
+}
+
 .edit::before {
   background: url('../assets/icons/pencil.png') no-repeat center / contain;
   content: "";
