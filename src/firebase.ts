@@ -1,7 +1,13 @@
 import { initializeApp } from 'firebase/app';
-import { getFirestore, collection } from 'firebase/firestore';
+import {
+  getFirestore,
+  collection,
+  type CollectionReference,
+  type QueryDocumentSnapshot,
+} from 'firebase/firestore';
 import { getDatabase, ref } from 'firebase/database';
 import { Firebase } from './constants';
+import type { Staff } from './types';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyCE4gJ_ik5NOq7rAW9mWfdd9DIj514PfCk',
@@ -16,8 +22,22 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 
+const staffConverter = {
+  toFirestore: (staff: Staff) => staff,
+  fromFirestore: (snap: QueryDocumentSnapshot): Staff => {
+    const data = snap.data();
+    if (!data.name || !data.workDays) {
+      throw new Error('Invalid staff data');
+    }
+    return data as Staff;
+  },
+};
+
 export const db = getFirestore(app);
-export const staffCollection = collection(db, Firebase.STAFF);
+export const staffCollection: CollectionReference<Staff> = collection(
+  db,
+  Firebase.STAFF
+).withConverter(staffConverter);
 export const scheduleRef = (name?: string) => {
   const path = name ? `${Firebase.SCHEDULE}/${name}` : Firebase.SCHEDULE;
   return ref(getDatabase(app), path);

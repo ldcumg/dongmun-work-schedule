@@ -7,5 +7,6 @@ export const initUI = () => ({
   resetScheduleButton: getElement('#reset-schedule-button', HTMLInputElement),
   weekRangeContainer: getElement('#week-range-container', HTMLDivElement),
   numberWorkContainer: getElement('#work-number-container', HTMLDivElement),
+  cumulationContainer: getElement('#cumulation-container', HTMLDivElement),
   copyButton: getElement('#copy-button', HTMLInputElement),
 });

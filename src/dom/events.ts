@@ -1,27 +1,23 @@
-import { resetSchedule, submitSelectedDays } from '../api';
+import { fetchStaffs, resetSchedule, submitSelectedDays } from '../api';
 import {
   clearStaffButtonClasses,
   getElement,
   isWeekday,
   toggleStaffButtonClass,
 } from '../utils';
-import {
-  addLaundryDay,
-  addWorkDay,
-  removeLaundryDay,
-  removeWorkDay,
-} from '../store';
+import { selectDay, deselectDay, clearSelectedDays } from '../store';
 import { clearSavedName, saveName } from '../feature/name';
 import { attachNewbie, editStaff, removeStaffByName } from '../feature/staff';
 import {
   createApplyWorkContainer,
   createStaffSelectContainer,
 } from './elements';
+import { SelectedDaysKey } from '../constants';
 
 export const delegateStaffEvents = (parentNode: HTMLElement) => {
   let editMode = false;
   let deleteMode = false;
-  let editingTarget: HTMLInputElement | null = null;
+  let editingTarget: HTMLButtonElement | null = null;
 
   parentNode.addEventListener('click', async (e) => {
     const target = e.target;
@@ -29,9 +25,8 @@ export const delegateStaffEvents = (parentNode: HTMLElement) => {
 
     const staffButtons =
       parentNode.querySelectorAll<HTMLInputElement>('.staff-button');
-    const svgs = parentNode.querySelectorAll<SVGSVGElement>(
-      '#control-container svg'
-    );
+    const svgs =
+      parentNode.querySelectorAll<SVGSVGElement>('#svg-container svg');
 
     // SVG 클릭 처리
     svgs.forEach(async (svg, index) => {
@@ -54,6 +49,8 @@ export const delegateStaffEvents = (parentNode: HTMLElement) => {
           editMode = !editMode;
           clearStaffButtonClasses(staffButtons, 'delete');
           toggleStaffButtonClass(staffButtons, 'edit', editMode);
+          const nameForm = getElement('#name-form', HTMLFormElement);
+          if (!nameForm.hidden) nameForm.hidden = true;
           break;
         case 2: // 삭제
           editMode = false;
@@ -66,7 +63,7 @@ export const delegateStaffEvents = (parentNode: HTMLElement) => {
 
     // staff-button 클릭 처리
     if (
-      target instanceof HTMLInputElement &&
+      target instanceof HTMLButtonElement &&
       target.classList.contains('staff-button')
     ) {
       if (editMode) {
@@ -75,21 +72,22 @@ export const delegateStaffEvents = (parentNode: HTMLElement) => {
         nameForm.hidden = false;
         nameInput.focus();
         editingTarget = target;
-        editMode = false;
         return;
       }
 
       if (deleteMode) {
-        if (confirm(`${target.value}을(를) 삭제하시겠습니까?`)) {
-          await removeStaffByName(target.value, target);
+        if (confirm(`${target.textContent}을(를) 삭제하시겠습니까?`)) {
+          await removeStaffByName(target.textContent, target);
           deleteMode = false;
           clearStaffButtonClasses(staffButtons, 'delete');
         }
         return;
       }
 
-      saveName(target.value);
-      parentNode.replaceChildren(createApplyWorkContainer(target.value));
+      saveName(target.textContent);
+      createApplyWorkContainer(target.textContent).then((el) =>
+        parentNode.replaceChildren(el)
+      );
     }
   });
 
@@ -105,7 +103,7 @@ export const delegateStaffEvents = (parentNode: HTMLElement) => {
     const newName = nameInput.value.trim();
     if (!newName) return;
 
-    await editStaff(editingTarget.value, newName, editingTarget);
+    await editStaff(editingTarget.textContent, newName, editingTarget);
     nameInput.value = '';
     editingTarget = null;
     target.hidden = true;
@@ -125,8 +123,11 @@ export const delegateSubmitEvents = (parentNode: HTMLElement) => {
       target.id === 'staff-change-button'
     ) {
       clearSavedName();
-      const staffSelectContainer = await createStaffSelectContainer();
-      parentNode.replaceChildren(staffSelectContainer);
+      clearSelectedDays();
+      const staffs = await fetchStaffs();
+      createStaffSelectContainer(staffs).then((el) =>
+        parentNode.replaceChildren(el)
+      );
     }
   });
 
@@ -146,19 +147,19 @@ export const delegateSubmitEvents = (parentNode: HTMLElement) => {
       );
       if (!laundryCheckbox) return;
 
-      if (target.checked) addWorkDay(day);
-      else removeWorkDay(day);
+      if (target.checked) selectDay(SelectedDaysKey.WORK, day);
+      else deselectDay(SelectedDaysKey.WORK, day);
 
       laundryCheckbox.disabled = !target.checked;
       if (!target.checked) {
         laundryCheckbox.checked = false;
-        removeLaundryDay(day);
+        deselectDay(SelectedDaysKey.LAUNDRY, day);
       }
     }
 
     if (role === 'laundry') {
-      if (target.checked) addLaundryDay(day);
-      else removeLaundryDay(day);
+      if (target.checked) selectDay(SelectedDaysKey.LAUNDRY, day);
+      else deselectDay(SelectedDaysKey.LAUNDRY, day);
     }
   });
 

@@ -1,17 +1,22 @@
-import type { Weekday } from './types';
+import type { SelectedDaysKey, Weekday } from './types';
 
-// TODO - 객체로 묶기
-const _selectedWorkDays = new Set<Weekday>();
-const _selectedLaundryDays = new Set<Weekday>();
+const _selectedDays: Record<SelectedDaysKey, Set<Weekday>> = {
+  work: new Set<Weekday>(),
+  laundry: new Set<Weekday>(),
+};
 
 // getter
-export const getSelectedWorkDays = () => _selectedWorkDays;
-export const getSelectedLaundryDays = () => _selectedLaundryDays;
+export const getSelectedDays = (key: SelectedDaysKey) => _selectedDays[key];
 
 // setter
-export const addWorkDay = (day: Weekday) => _selectedWorkDays.add(day);
-export const addLaundryDay = (day: Weekday) => _selectedLaundryDays.add(day);
+export const selectDay = (key: SelectedDaysKey, day: Weekday) =>
+  _selectedDays[key].add(day);
 
-export const removeWorkDay = (day: Weekday) => _selectedWorkDays.delete(day);
-export const removeLaundryDay = (day: Weekday) =>
-  _selectedLaundryDays.delete(day);
+export const deselectDay = (key: SelectedDaysKey, day: Weekday) =>
+  _selectedDays[key].delete(day);
+
+export const clearSelectedDays = () => {
+  for (const key in _selectedDays) {
+    _selectedDays[key as SelectedDaysKey].clear();
+  }
+};

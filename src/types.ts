@@ -15,3 +15,8 @@ export type ScheduleData = {
     laundry: Weekday[];
   };
 };
+
+export type Staff = {
+  name: string;
+  workDays: Record<string, number>;
+};

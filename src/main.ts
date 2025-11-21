@@ -10,17 +10,18 @@ import {
 import {
   renderCheckboxes,
   renderSchedule,
+  renderTotalWorkDays,
   renderWeekRange,
 } from './dom/render';
 import { initUI } from './dom/init';
 import { getSavedName } from './feature/name';
-import { getElement } from './utils';
 import {
   createApplyWorkContainer,
   createStaffSelectContainer,
 } from './dom/elements';
+import { fetchStaffs } from './api';
 
-window.addEventListener('DOMContentLoaded', () => {
+window.addEventListener('DOMContentLoaded', async () => {
   const {
     selectSection,
     scheduleDisplay,
@@ -28,25 +29,22 @@ window.addEventListener('DOMContentLoaded', () => {
     scheduleContainer,
     resetScheduleButton,
     numberWorkContainer,
+    cumulationContainer,
     copyButton,
   } = initUI();
 
-  const savedName = getSavedName();
+  let init = true;
+  let savedName = getSavedName();
+  let staffs = await fetchStaffs();
 
-  onValue(scheduleRef(), (snapshot: DataSnapshot) => {
-    const scheduleData = snapshot.val();
-    renderSchedule(scheduleContainer, numberWorkContainer, scheduleData);
-    if (savedName) {
-      const workDayContainer = getElement('#workday-container', HTMLDivElement);
-      const laundryContainer = getElement('#laundry-container', HTMLDivElement);
-      syncSelectedDays(savedName, scheduleData);
-      renderCheckboxes(workDayContainer, laundryContainer);
-    }
-  });
   if (savedName) {
-    selectSection.appendChild(createApplyWorkContainer(savedName));
+    createApplyWorkContainer(savedName).then((el) =>
+      selectSection.appendChild(el)
+    );
   } else {
-    createStaffSelectContainer().then((el) => selectSection.appendChild(el));
+    createStaffSelectContainer(staffs).then((el) =>
+      selectSection.appendChild(el)
+    );
   }
   renderWeekRange(weekRangeContainer);
 
@@ -55,4 +53,17 @@ window.addEventListener('DOMContentLoaded', () => {
 
   bindResetScheduleEvent(resetScheduleButton);
   bindCopyScheduleEvent(copyButton, scheduleDisplay);
+
+  onValue(scheduleRef(), async (snapshot: DataSnapshot) => {
+    const scheduleData = snapshot.val();
+    renderSchedule(scheduleContainer, numberWorkContainer, scheduleData);
+    init
+      ? (init = false)
+      : ((staffs = await fetchStaffs()), (savedName = getSavedName()));
+    renderTotalWorkDays(cumulationContainer, staffs);
+    if (savedName) {
+      syncSelectedDays(savedName, scheduleData);
+      renderCheckboxes();
+    }
+  });
 });

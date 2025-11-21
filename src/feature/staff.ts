@@ -23,15 +23,15 @@ const dbAddNewbie = async (staffContainer: HTMLDivElement) => {
 
 export const attachNewbie = async (targetNode: HTMLDivElement) => {
   const name = await dbAddNewbie(targetNode);
-  const staffButton = document.createElement('input');
+  const staffButton = document.createElement('button');
   staffButton.type = 'button';
   staffButton.className = 'staff-button';
   staffButton.id = name;
-  staffButton.value = name;
+  staffButton.textContent = name;
   targetNode.appendChild(staffButton);
 };
 
-const operateStaffByName = async (
+export const operateStaffByName = async (
   name: string,
   callback: (docSnapId: string) => Promise<void>
 ) => {
@@ -49,7 +49,7 @@ const operateStaffByName = async (
 export const editStaff = async (
   targetName: string,
   newName: string,
-  target: HTMLInputElement
+  target: HTMLButtonElement
 ) => {
   await operateStaffByName(targetName, (docId) =>
     updateDoc(doc(db, Firebase.STAFF, docId), { name: newName })
@@ -59,7 +59,7 @@ export const editStaff = async (
 
 export const removeStaffByName = async (
   targetName: string,
-  target: HTMLInputElement
+  target: HTMLButtonElement
 ) => {
   await operateStaffByName(targetName, (docId) =>
     deleteDoc(doc(db, Firebase.STAFF, docId))

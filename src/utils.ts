@@ -39,38 +39,64 @@ export function isWeekday(v: string | undefined): v is Weekday {
   return (WEEKDAYS as readonly string[]).includes(v);
 }
 
-function getWeekRange(baseMonday: Date) {
+/** 이번 주 월요일 구하기 */
+function getMonday(date: Date): Date {
+  const d = new Date(date);
+  const day = d.getDay(); // 0: 일요일
+  const diffToMonday = day === 0 ? -6 : 1 - day;
+  d.setDate(d.getDate() + diffToMonday);
+  d.setHours(0, 0, 0, 0);
+  return d;
+}
+
+/** 일요일 16시 이후인지 체크 */
+function isAfterSunday4PM(date: Date): boolean {
+  const monday = getMonday(date);
+  const sunday4PM = new Date(monday);
+  sunday4PM.setDate(monday.getDate() + 6);
+  sunday4PM.setHours(16, 0, 0, 0);
+  return date >= sunday4PM;
+}
+
+/** 주간 범위 반환 */
+function getWeekRange(baseMonday: Date): [Date, Date] {
   const monday = new Date(baseMonday);
   const sunday = new Date(baseMonday);
   sunday.setDate(baseMonday.getDate() + 6);
-  return [monday, sunday] as const;
+  return [monday, sunday];
 }
 
-export function getSmartWeekRange() {
-  const now = new Date();
-  const day = now.getDay(); // 0: 일요일
-  const date = now.getDate();
-
-  // 이번 주 월요일 구하기
-  const diffToMonday = day === 0 ? -6 : 1 - day;
-  const thisWeekMonday = new Date(now);
-  thisWeekMonday.setDate(date + diffToMonday);
-
-  // 다음 주 월요일
+/** 일요일 16시를 기준으로 주간 범위 반환 */
+export function getSmartWeekRange(): [Date, Date] {
+  const date = new Date();
+  const thisWeekMonday = getMonday(date);
   const nextWeekMonday = new Date(thisWeekMonday);
   nextWeekMonday.setDate(thisWeekMonday.getDate() + 7);
 
-  // 지금이 "일요일 16:00 이후"인지 체크
-  const isAfterSunday4PM = (() => {
-    const sunday = new Date(thisWeekMonday);
-    sunday.setDate(thisWeekMonday.getDate() + 6);
-    sunday.setHours(16, 0, 0, 0);
-    return now >= sunday;
-  })();
-
-  return isAfterSunday4PM
+  return isAfterSunday4PM(date)
     ? getWeekRange(nextWeekMonday) // 다음 주
     : getWeekRange(thisWeekMonday); // 이번 주
+}
+
+/**
+ * 주차 키 반환
+ * @example "2023-W15"
+ *  */
+export function getWeekKey(): string {
+  // Smart Week를 기준으로 계산
+  const [weekMonday] = getSmartWeekRange();
+  const tempDate = new Date(weekMonday.getTime());
+
+  // ISO 주차 계산
+  tempDate.setDate(tempDate.getDate() + 4 - (tempDate.getDay() || 7));
+  const year = tempDate.getFullYear();
+  const firstDayOfYear = new Date(year, 0, 1);
+
+  const week = Math.ceil(
+    ((tempDate.getTime() - firstDayOfYear.getTime()) / 86400000 + 1) / 7
+  );
+
+  return `${year}-W${week}`;
 }
 
 export function getPeopleForDay(

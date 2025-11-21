@@ -18,6 +18,11 @@ export const SVG_ICON_PATH = Object.freeze({
   x: createSvgPath('circle-x'),
 } as const);
 
+export enum SelectedDaysKey {
+  WORK = 'work',
+  LAUNDRY = 'laundry',
+}
+
 export enum Firebase {
   STAFF = 'staff',
   NAME = 'name',
