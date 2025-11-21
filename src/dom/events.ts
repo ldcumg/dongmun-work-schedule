@@ -13,6 +13,7 @@ import {
   createStaffSelectContainer,
 } from './elements';
 import { SelectedDaysKey } from '../constants';
+import { renderTotalWorkDays } from './render';
 
 export const delegateStaffEvents = (parentNode: HTMLElement) => {
   let editMode = false;
@@ -174,6 +175,13 @@ export const delegateSubmitEvents = (parentNode: HTMLElement) => {
     if (!name.textContent) return alert('스탭을 선택해주세요');
 
     await submitSelectedDays(name.textContent);
+
+    const cumulationContainer = getElement(
+      '#cumulation-container',
+      HTMLDivElement
+    );
+    const staffs = await fetchStaffs();
+    renderTotalWorkDays(cumulationContainer, staffs);
   });
 };
 

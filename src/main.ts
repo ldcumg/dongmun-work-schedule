@@ -35,7 +35,7 @@ window.addEventListener('DOMContentLoaded', async () => {
 
   let init = true;
   let savedName = getSavedName();
-  let staffs = await fetchStaffs();
+  const staffs = await fetchStaffs();
 
   if (savedName) {
     const applyWorkContainer = await createApplyWorkContainer(savedName);
@@ -45,6 +45,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     selectSection.appendChild(staffSelectContainer);
   }
   renderWeekRange(weekRangeContainer);
+  renderTotalWorkDays(cumulationContainer, staffs);
 
   delegateStaffEvents(selectSection);
   delegateSubmitEvents(selectSection);
@@ -55,16 +56,7 @@ window.addEventListener('DOMContentLoaded', async () => {
   onValue(scheduleRef(), async (snapshot: DataSnapshot) => {
     const scheduleData = snapshot.val();
     renderSchedule(scheduleContainer, numberWorkContainer, scheduleData);
-    if (init) {
-      init = false;
-    } else {
-      staffs = await fetchStaffs();
-      savedName = getSavedName();
-    }
-    renderTotalWorkDays(cumulationContainer, staffs);
-    if (savedName) {
-      syncSelectedDays(savedName, scheduleData);
-      renderCheckboxes();
-    }
+    init ? (init = false) : (savedName = getSavedName());
+    savedName && syncSelectedDays(savedName, scheduleData), renderCheckboxes();
   });
 });
