@@ -60,7 +60,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     const scheduleData = snapshot.val();
     renderSchedule(scheduleContainer, numberWorkContainer, scheduleData);
     init ? (init = false) : (savedStaff = getSavedStaff());
-    savedStaff && syncSelectedDays(savedStaff.name, scheduleData),
-      renderCheckboxes();
+    savedStaff &&
+      (syncSelectedDays(savedStaff.name, scheduleData), renderCheckboxes());
   });
 });
