@@ -1,6 +1,15 @@
 import { WEEKDAYS } from './constants';
 import type { ScheduleData, SelectedDaysKey, Weekday } from './types';
 
+export function createEl<K extends keyof HTMLElementTagNameMap>(
+  tag: K,
+  options?: Partial<HTMLElementTagNameMap[K]>
+) {
+  const el = document.createElement(tag);
+  if (options) Object.assign(el, options);
+  return el;
+}
+
 export function getElement<T extends HTMLElement>(
   selector: string,
   type: new () => T

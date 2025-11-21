@@ -38,13 +38,11 @@ window.addEventListener('DOMContentLoaded', async () => {
   let staffs = await fetchStaffs();
 
   if (savedName) {
-    createApplyWorkContainer(savedName).then((el) =>
-      selectSection.appendChild(el)
-    );
+    const applyWorkContainer = await createApplyWorkContainer(savedName);
+    selectSection.appendChild(applyWorkContainer);
   } else {
-    createStaffSelectContainer(staffs).then((el) =>
-      selectSection.appendChild(el)
-    );
+    const staffSelectContainer = await createStaffSelectContainer(staffs);
+    selectSection.appendChild(staffSelectContainer);
   }
   renderWeekRange(weekRangeContainer);
 
@@ -57,9 +55,12 @@ window.addEventListener('DOMContentLoaded', async () => {
   onValue(scheduleRef(), async (snapshot: DataSnapshot) => {
     const scheduleData = snapshot.val();
     renderSchedule(scheduleContainer, numberWorkContainer, scheduleData);
-    init
-      ? (init = false)
-      : ((staffs = await fetchStaffs()), (savedName = getSavedName()));
+    if (init) {
+      init = false;
+    } else {
+      staffs = await fetchStaffs();
+      savedName = getSavedName();
+    }
     renderTotalWorkDays(cumulationContainer, staffs);
     if (savedName) {
       syncSelectedDays(savedName, scheduleData);

@@ -50,7 +50,7 @@ export const delegateStaffEvents = (parentNode: HTMLElement) => {
           clearStaffButtonClasses(staffButtons, 'delete');
           toggleStaffButtonClass(staffButtons, 'edit', editMode);
           const nameForm = getElement('#name-form', HTMLFormElement);
-          if (!nameForm.hidden) nameForm.hidden = true;
+          nameForm.hidden = true;
           break;
         case 2: // 삭제
           editMode = false;
@@ -92,9 +92,8 @@ export const delegateStaffEvents = (parentNode: HTMLElement) => {
   });
 
   parentNode.addEventListener('submit', async (e) => {
-    const target = e.target;
-    if (!(target instanceof HTMLFormElement) || target.id !== 'name-form')
-      return;
+    const form = e.target;
+    if (!(form instanceof HTMLFormElement) || form.id !== 'name-form') return;
 
     e.preventDefault();
     if (!editingTarget) return;
@@ -106,7 +105,7 @@ export const delegateStaffEvents = (parentNode: HTMLElement) => {
     await editStaff(editingTarget.textContent, newName, editingTarget);
     nameInput.value = '';
     editingTarget = null;
-    target.hidden = true;
+    form.hidden = true;
     clearStaffButtonClasses(
       parentNode.querySelectorAll<HTMLInputElement>('.staff-button'),
       'edit'
@@ -147,8 +146,9 @@ export const delegateSubmitEvents = (parentNode: HTMLElement) => {
       );
       if (!laundryCheckbox) return;
 
-      if (target.checked) selectDay(SelectedDaysKey.WORK, day);
-      else deselectDay(SelectedDaysKey.WORK, day);
+      target.checked
+        ? selectDay(SelectedDaysKey.WORK, day)
+        : deselectDay(SelectedDaysKey.WORK, day);
 
       laundryCheckbox.disabled = !target.checked;
       if (!target.checked) {
@@ -158,17 +158,17 @@ export const delegateSubmitEvents = (parentNode: HTMLElement) => {
     }
 
     if (role === 'laundry') {
-      if (target.checked) selectDay(SelectedDaysKey.LAUNDRY, day);
-      else deselectDay(SelectedDaysKey.LAUNDRY, day);
+      target.checked
+        ? selectDay(SelectedDaysKey.LAUNDRY, day)
+        : deselectDay(SelectedDaysKey.LAUNDRY, day);
     }
   });
 
-  // submit-button 이벤트
+  // submit-day-form 이벤트
   parentNode.addEventListener('submit', async (e) => {
-    if (!(e.target instanceof HTMLFormElement)) return;
     const form = e.target;
+    if (!(form instanceof HTMLFormElement) || form.id !== 'day-form') return;
     e.preventDefault();
-    if (form.id !== 'day-form') return;
 
     const name = getElement('#name', HTMLSpanElement);
     if (!name.textContent) return alert('스탭을 선택해주세요');
@@ -184,20 +184,18 @@ export const bindResetScheduleEvent = (button: HTMLInputElement) => {
   });
 };
 
-/** 복사 버튼 이벤트 */
+/** 근무표 복사 버튼 이벤트 */
 export const bindCopyScheduleEvent = (
   button: HTMLInputElement,
   target: HTMLDivElement
 ) => {
   button.addEventListener('click', () => {
-    let textToCopy = target.innerText;
-    textToCopy = textToCopy.replace(/\n{3,}/g, '\n\n');
+    let textToCopy = target.innerText.replace(/\n{3,}/g, '\n\n');
 
     navigator.clipboard
       .writeText(textToCopy)
       .then(() => {
         button.value = '복사됨';
-
         setTimeout(() => {
           button.value = '복사';
         }, 500);

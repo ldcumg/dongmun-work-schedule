@@ -11,7 +11,6 @@ export const createSvgIcon = async (path: string) => {
   const parser = new DOMParser();
   const doc = parser.parseFromString(svgText, 'image/svg+xml');
   const svg = doc.querySelector('svg');
-
   if (!svg) return null;
 
   svg.setAttribute('width', '24');
@@ -21,17 +20,23 @@ export const createSvgIcon = async (path: string) => {
   return svg;
 };
 
-export const renderCheckboxes = () => {
-  const workDayContainer = getElement('#workday-container', HTMLDivElement);
-  const laundryContainer = getElement('#laundry-container', HTMLDivElement);
-
+export const renderCheckboxes = (
+  workDayContainer: HTMLDivElement = getElement(
+    '#workday-container',
+    HTMLDivElement
+  ),
+  laundryContainer: HTMLDivElement = getElement(
+    '#laundry-container',
+    HTMLDivElement
+  )
+) => {
   const workFrag = document.createDocumentFragment();
   const laundryFrag = document.createDocumentFragment();
 
-  WEEKDAYS.forEach((day) => {
-    const selectedWorkDays = getSelectedDays(SelectedDaysKey.WORK);
-    const selectedLaundryDays = getSelectedDays(SelectedDaysKey.LAUNDRY);
+  const selectedWorkDays = getSelectedDays(SelectedDaysKey.WORK);
+  const selectedLaundryDays = getSelectedDays(SelectedDaysKey.LAUNDRY);
 
+  WEEKDAYS.forEach((day) => {
     const { label: workLabel, checkbox: workCheckbox } = createCheckbox(
       day,
       selectedWorkDays,
@@ -45,13 +50,8 @@ export const renderCheckboxes = () => {
 
     laundryCheckbox.disabled = !selectedWorkDays.has(day);
 
-    workLabel.dataset.day = day;
-    laundryLabel.dataset.day = day;
-    workCheckbox.dataset.role = 'work';
-    laundryCheckbox.dataset.role = 'laundry';
-
-    workFrag.appendChild(workLabel);
-    laundryFrag.appendChild(laundryLabel);
+    workFrag.append(workLabel);
+    laundryFrag.append(laundryLabel);
   });
 
   workDayContainer.replaceChildren(workFrag);
@@ -69,21 +69,22 @@ export const renderWeekRange = (weekRangeContainer: HTMLDivElement) => {
 };
 
 /** 근무 스케줄 렌더링 */
-export const renderSchedule = async (
+export const renderSchedule = (
   scheduleContainer: HTMLDivElement,
   numberWorkContainer: HTMLDivElement,
   scheduleData: ScheduleData
 ) => {
+  // 요일별 근무 / 빨래 사람
   scheduleContainer.innerText = WEEKDAYS.map((day) => {
     const work = getPeopleForDay(scheduleData, 'work', day);
     const laundry = getPeopleForDay(scheduleData, 'laundry', day);
     return `${day} ${work.join(' ')} / ${laundry.join(' ')}`;
   }).join('\n');
 
-  const numberOfWorkData: { [key: string]: Set<string> } = {};
+  // 근무일수별 사람
+  const numberOfWorkData: Record<string, Set<string>> = {};
   for (const name in scheduleData) {
-    if (!scheduleData.hasOwnProperty(name)) continue;
-    const workDays = String(scheduleData[name].work.length);
+    const workDays = scheduleData[name].work.length.toString();
     (numberOfWorkData[workDays] ??= new Set()).add(name);
   }
 
