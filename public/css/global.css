@@ -141,6 +141,7 @@ footer {
 }
 
 #apply-work-container {
+  margin: 0 3vw;
   overflow-x: auto;
   flex-wrap: wrap;
 }
@@ -189,11 +190,6 @@ footer {
   margin: 20px 0;
 }
 
-#day-form label {
-  display: flex;
-  flex-direction: row;
-}
-
 #submit-button-container {
   justify-content: flex-end;
   margin-top: 24px;
@@ -213,6 +209,11 @@ footer {
 #day-form>div {
   display: flex;
   gap: 3vw;
+}
+
+#day-form label {
+  display: flex;
+  flex-direction: row;
 }
 
 #schedule-display-container {
