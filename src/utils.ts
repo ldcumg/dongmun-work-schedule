@@ -102,7 +102,7 @@ export function getSmartWeekRange(): [Date, Date] {
 
 /**
  * 주차 키 반환
- * @example "2023-W15"
+ * @example "2023-W47"
  *  */
 export function getWeekKey(): string {
   // Smart Week를 기준으로 계산
