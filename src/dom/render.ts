@@ -4,22 +4,6 @@ import { getElement, getPeopleForDay, getSmartWeekRange } from '../utils';
 import type { ScheduleData, Staff } from '../types';
 import { createCheckbox } from './elements';
 
-export const createSvgIcon = async (path: string) => {
-  const response = await fetch(path);
-  const svgText = await response.text();
-
-  const parser = new DOMParser();
-  const doc = parser.parseFromString(svgText, 'image/svg+xml');
-  const svg = doc.querySelector('svg');
-  if (!svg) return null;
-
-  svg.setAttribute('width', '24');
-  svg.setAttribute('height', '24');
-  svg.setAttribute('fill', 'currentColor');
-
-  return svg;
-};
-
 export const renderCheckboxes = (
   workDayContainer: HTMLDivElement = getElement(
     '#workday-container',

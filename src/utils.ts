@@ -38,6 +38,30 @@ export function createSvgPath(fileName: string) {
   return `/assets/icons/${fileName}.svg`;
 }
 
+async function createSvgIcon(path: string) {
+  const response = await fetch(path);
+  const svgText = await response.text();
+
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(svgText, 'image/svg+xml');
+  const svg = doc.querySelector('svg');
+  if (!svg) return null;
+
+  svg.setAttribute('width', '24');
+  svg.setAttribute('height', '24');
+  svg.setAttribute('fill', 'currentColor');
+
+  return svg;
+}
+
+export async function appendSvgIcons(container: HTMLElement, paths: string[]) {
+  const results = await Promise.allSettled(paths.map(createSvgIcon));
+  results.forEach((res) => {
+    if (res.status === 'fulfilled' && res.value)
+      container.appendChild(res.value);
+  });
+}
+
 export function clearStaffButtonClasses(
   buttons: NodeListOf<HTMLButtonElement>,
   ...classes: string[]

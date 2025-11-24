@@ -2,17 +2,9 @@ import { get } from 'firebase/database';
 import { SVG_ICON_PATH } from '../constants';
 import { syncSelectedDays } from '../feature/schedule';
 import type { SelectedDaysValue, Staff, Weekday } from '../types';
-import { createSvgIcon, renderCheckboxes } from './render';
+import { renderCheckboxes } from './render';
 import { scheduleRef } from '../firebase';
-import { createEl } from '../utils';
-
-const appendSvgIcons = async (container: HTMLElement, paths: string[]) => {
-  const results = await Promise.allSettled(paths.map(createSvgIcon));
-  results.forEach((res) => {
-    if (res.status === 'fulfilled' && res.value)
-      container.appendChild(res.value);
-  });
-};
+import { appendSvgIcons, createEl } from '../utils';
 
 export const createStaffSelectContainer = async (staffs: Staff[]) => {
   const staffSelectContainer = createEl('div', {
