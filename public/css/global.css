@@ -149,11 +149,6 @@ footer {
   align-items: center;
 }
 
-#name-form {
-  display: flex;
-  align-items: center;
-}
-
 #name-input {
   width: 116px;
   margin-right: 4px;
