@@ -18,10 +18,7 @@ import {
   removeStaffByName,
   saveStaff,
 } from '../feature/staff';
-import {
-  createApplyWorkContainer,
-  createStaffSelectContainer,
-} from './elements';
+import { createApplyWorkChildren, createStaffSelectChildren } from './elements';
 import { SelectedDaysKey } from '../constants';
 import { renderTotalWorkDays } from './render';
 import { remove, set } from 'firebase/database';
@@ -112,12 +109,12 @@ export const delegateStaffEvents = (parentNode: HTMLElement) => {
       }
 
       saveStaff(target.textContent, docId);
-      const applyWorkContainer = createApplyWorkContainer(
+      const applyWorkChildren = createApplyWorkChildren(
         target.textContent,
         docId,
         scheduleData
       );
-      parentNode.replaceChildren(applyWorkContainer);
+      parentNode.replaceChildren(...applyWorkChildren);
     }
   });
 
@@ -172,8 +169,8 @@ export const delegateSubmitEvents = (parentNode: HTMLElement) => {
       removeSavedStaff();
       clearSelectedDays();
       const staffs = await fetchStaffs();
-      createStaffSelectContainer(staffs).then((el) =>
-        parentNode.replaceChildren(el)
+      createStaffSelectChildren(staffs).then((elements) =>
+        parentNode.replaceChildren(...elements)
       );
     }
   });

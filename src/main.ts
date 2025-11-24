@@ -13,8 +13,8 @@ import {
 } from './dom/render';
 import { initUI } from './dom/init';
 import {
-  createApplyWorkContainer,
-  createStaffSelectContainer,
+  createApplyWorkChildren,
+  createStaffSelectChildren,
 } from './dom/elements';
 import { fetchStaffs } from './api';
 import { getSavedStaff } from './feature/staff';
@@ -41,19 +41,19 @@ window.addEventListener('DOMContentLoaded', async () => {
     setScheduleData(scheduleData);
     renderSchedule(scheduleContainer, numberWorkContainer, scheduleData);
     if (init && savedStaff) {
-      const applyWorkContainer = createApplyWorkContainer(
+      const applyWorkChildren = createApplyWorkChildren(
         savedStaff.name,
         savedStaff.docId,
         scheduleData
       );
-      selectSection.appendChild(applyWorkContainer);
+      selectSection.append(...applyWorkChildren);
     }
     init && (init = false);
   });
 
   if (!savedStaff) {
-    const staffSelectContainer = await createStaffSelectContainer(staffs);
-    selectSection.appendChild(staffSelectContainer);
+    const staffSelectChildren = await createStaffSelectChildren(staffs);
+    selectSection.append(...staffSelectChildren);
   }
 
   renderWeekRange(weekRangeContainer);

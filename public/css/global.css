@@ -130,14 +130,12 @@ footer {
 
 #select-section {
   background-color: rgba(80, 78, 73, 0.9);
-  padding: 20px 0;
-}
-
-#staff-select-container,
-#apply-work-container {
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 20px 3vw;
+  overflow-x: auto;
+  flex-wrap: wrap;
 }
 
 #apply-work-container {

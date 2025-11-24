@@ -23,11 +23,7 @@ const createCheckbox = (
   return { label, checkbox };
 };
 
-export const createStaffSelectContainer = async (staffs: Staff[]) => {
-  const staffSelectContainer = createEl('div', {
-    id: 'staff-select-container',
-  });
-
+export const createStaffSelectChildren = async (staffs: Staff[]) => {
   const controlContainer = createEl('div', { id: 'control-container' });
   const svgContainer = createEl('div', { id: 'svg-container' });
   const staffContainer = createEl('div', { id: 'staff-container' });
@@ -63,16 +59,14 @@ export const createStaffSelectContainer = async (staffs: Staff[]) => {
     staffContainer.appendChild(staffButton);
   });
 
-  staffSelectContainer.append(controlContainer, staffContainer);
-  return staffSelectContainer;
+  return [controlContainer, staffContainer];
 };
 
-export const createApplyWorkContainer = (
+export const createApplyWorkChildren = (
   staffName: string,
   docId: string,
   scheduleData: ScheduleData
 ) => {
-  const applyWorkContainer = createEl('div', { id: 'apply-work-container' });
   const nameContainer = createEl('div', { id: 'name-container' });
 
   const nameSign = createEl('span', { textContent: '이름 :' });
@@ -132,6 +126,5 @@ export const createApplyWorkContainer = (
     submitButtonContainer
   );
 
-  applyWorkContainer.append(nameContainer, dayForm);
-  return applyWorkContainer;
+  return [nameContainer, dayForm];
 };
