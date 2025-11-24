@@ -136,15 +136,15 @@ export const delegateStaffEvents = (parentNode: HTMLElement) => {
     if (Object.keys(scheduleData).includes(targetName)) {
       set(scheduleRef(newName), scheduleData[targetName]);
       remove(scheduleRef(targetName));
+      const cumulationContainer = getElement(
+        '#cumulation-container',
+        HTMLDivElement
+      );
+      cumulationContainer.innerText = cumulationContainer.innerText.replace(
+        targetName,
+        newName
+      );
     }
-    const cumulationContainer = getElement(
-      '#cumulation-container',
-      HTMLDivElement
-    );
-    cumulationContainer.innerText = cumulationContainer.innerText.replace(
-      targetName,
-      newName
-    );
     editingTarget.textContent = newName;
     editingTarget.classList.remove('editing');
     editingTarget = null;
