@@ -29,10 +29,10 @@ export const createStaffSelectContainer = async (staffs: Staff[]) => {
     id: 'name-input',
     placeholder: '변경할 이름 입력',
   });
-  const nameButton = createEl('input', {
+  const nameButton = createEl('button', {
     type: 'submit',
     id: 'name-button',
-    value: '완료',
+    textContent: '완료',
   });
 
   nameForm.append(nameInput, nameButton);
@@ -71,10 +71,10 @@ export const createApplyWorkContainer = async (
     textContent: staffName,
     dataset: { docId },
   });
-  const staffChangeButton = createEl('input', {
+  const staffChangeButton = createEl('button', {
     type: 'button',
     id: 'staff-change-button',
-    value: '변경',
+    textContent: '변경',
   });
 
   nameContainer.append(nameSign, nameSpan, staffChangeButton);
@@ -92,10 +92,10 @@ export const createApplyWorkContainer = async (
   const submitButtonContainer = createEl('div', {
     id: 'submit-button-container',
   });
-  const submitButton = createEl('input', {
+  const submitButton = createEl('button', {
     type: 'submit',
     id: 'submit-button',
-    value: '제출',
+    textContent: '제출',
   });
   submitButtonContainer.appendChild(submitButton);
 

@@ -39,14 +39,14 @@ export function createSvgPath(fileName: string) {
 }
 
 export function clearStaffButtonClasses(
-  buttons: NodeListOf<HTMLInputElement>,
+  buttons: NodeListOf<HTMLButtonElement>,
   ...classes: string[]
 ) {
   buttons.forEach((btn) => classes.forEach((cls) => btn.classList.remove(cls)));
 }
 
 export function toggleStaffButtonClass(
-  buttons: NodeListOf<HTMLInputElement>,
+  buttons: NodeListOf<HTMLButtonElement>,
   className: string,
   condition: boolean
 ) {
