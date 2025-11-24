@@ -84,10 +84,11 @@ export const delegateStaffEvents = (parentNode: HTMLElement) => {
       if (editMode) {
         const nameForm = getElement('#name-form', HTMLFormElement);
         const nameInput = getElement('#name-input', HTMLInputElement);
-        clearStaffButtonClasses(staffButtons, 'editing');
-        target.classList.add('editing');
         editingTarget = target;
-        nameForm.hidden = false;
+        nameForm.hidden
+          ? (nameForm.hidden = false)
+          : clearStaffButtonClasses(staffButtons, 'editing');
+        target.classList.add('editing');
         nameInput.focus();
         return;
       }
