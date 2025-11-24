@@ -32,7 +32,7 @@ export const delegateStaffEvents = (parentNode: HTMLElement) => {
     if (!(target instanceof Node)) return;
 
     const staffButtons =
-      parentNode.querySelectorAll<HTMLInputElement>('.staff-button');
+      parentNode.querySelectorAll<HTMLButtonElement>('.staff-button');
     const svgs =
       parentNode.querySelectorAll<SVGSVGElement>('#svg-container svg');
 
@@ -139,7 +139,7 @@ export const delegateStaffEvents = (parentNode: HTMLElement) => {
     editingTarget = null;
     form.hidden = true;
     clearStaffButtonClasses(
-      parentNode.querySelectorAll<HTMLInputElement>('.staff-button'),
+      parentNode.querySelectorAll<HTMLButtonElement>('.staff-button'),
       'edit'
     );
   });
@@ -150,7 +150,7 @@ export const delegateSubmitEvents = (parentNode: HTMLElement) => {
   parentNode.addEventListener('click', async (e) => {
     const target = e.target;
     if (
-      target instanceof HTMLInputElement &&
+      target instanceof HTMLButtonElement &&
       target.id === 'staff-change-button'
     ) {
       removeSavedStaff();
@@ -217,7 +217,7 @@ export const delegateSubmitEvents = (parentNode: HTMLElement) => {
 };
 
 /** 근무표 초기화 버튼 이벤트 */
-export const bindResetScheduleEvent = (button: HTMLInputElement) => {
+export const bindResetScheduleEvent = (button: HTMLButtonElement) => {
   button.addEventListener('click', async () => {
     if (confirm('근무표를 초기화하시겠습니까?')) await resetSchedule();
   });
@@ -225,7 +225,7 @@ export const bindResetScheduleEvent = (button: HTMLInputElement) => {
 
 /** 근무표 복사 버튼 이벤트 */
 export const bindCopyScheduleEvent = (
-  button: HTMLInputElement,
+  button: HTMLButtonElement,
   target: HTMLDivElement
 ) => {
   button.addEventListener('click', () => {
@@ -234,9 +234,9 @@ export const bindCopyScheduleEvent = (
     navigator.clipboard
       .writeText(textToCopy)
       .then(() => {
-        button.value = '복사됨';
+        button.textContent = '복사됨';
         setTimeout(() => {
-          button.value = '복사';
+          button.textContent = '복사';
         }, 500);
       })
       .catch((err) => {
