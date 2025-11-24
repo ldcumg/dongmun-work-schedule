@@ -20,6 +20,7 @@ const createCheckbox = (
   checkbox.checked = selectedDays.has(day);
 
   label.append(checkbox, day);
+  
   return { label, checkbox };
 };
 
