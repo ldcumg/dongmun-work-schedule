@@ -88,10 +88,25 @@ export const renderSchedule = (
     (numberOfWorkData[workDays] ??= new Set()).add(name);
   }
 
-  numberWorkContainer.innerText = Object.keys(numberOfWorkData)
-    .sort((a, b) => Number(b) - Number(a))
-    .map((days) => `${[...numberOfWorkData[days]].join(' ')} ${days}일`)
-    .join('\n');
+  const entries = Object.entries(numberOfWorkData).sort(
+    (a, b) => Number(b[0]) - Number(a[0])
+  );
+
+  let numberWorkText = '';
+  for (let i = 0; i < entries.length; i++) {
+    const days = entries[i][0];
+    const namesSet = entries[i][1];
+
+    let names = '';
+    for (const name of namesSet) {
+      names += name + ' ';
+    }
+
+    numberWorkText += names + days + '일';
+    if (i !== entries.length - 1) numberWorkText += '\n';
+  }
+
+  numberWorkContainer.innerText = numberWorkText;
 };
 
 /** 누적 근무일수 렌더링 */
@@ -99,12 +114,16 @@ export const renderTotalWorkDays = (
   cumulationContainer: HTMLDivElement,
   staffs: Staff[]
 ) => {
-  const totals = staffs.map((staff) => ({
-    name: staff.name,
-    totalWorkDays: Object.values(staff.workDays).reduce((sum, v) => sum + v, 0),
-  }));
+  let cumulationText = '';
+  for (let i = 0; i < staffs.length; i++) {
+    const staff = staffs[i];
+    const totalWorkDays = Object.values(staff.workDays).reduce(
+      (sum, v) => sum + v,
+      0
+    );
+    cumulationText += `${staff.name} ${totalWorkDays}일`;
+    if (i !== staffs.length - 1) cumulationText += '\n';
+  }
 
-  cumulationContainer.innerText = totals
-    .map(({ name, totalWorkDays }) => `${name} ${totalWorkDays}일`)
-    .join('\n');
+  cumulationContainer.innerText = cumulationText;
 };
