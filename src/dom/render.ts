@@ -18,14 +18,12 @@ export const renderSchedule = (
   numberWorkContainer: HTMLDivElement,
   scheduleData: ScheduleData
 ) => {
-  // 요일별 근무 / 빨래 사람
   scheduleContainer.innerText = WEEKDAYS.map((day) => {
     const work = getPeopleForDay(scheduleData, 'work', day);
     const laundry = getPeopleForDay(scheduleData, 'laundry', day);
     return `${day} ${work.join(' ')} / ${laundry.join(' ')}`;
   }).join('\n');
 
-  // 근무일수별 사람
   const numberOfWorkData: Record<string, Set<string>> = {};
   for (const name in scheduleData) {
     const workDays = scheduleData[name].work.length.toString();

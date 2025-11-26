@@ -1,10 +1,10 @@
 import { SelectedDaysKey, SVG_ICON_PATH, WEEKDAYS } from '../constants';
 import { syncSelectedDays } from '../feature/schedule';
+import { getSelectedDays } from '../store';
 import type { ScheduleData, SelectedDaysValue, Staff, Weekday } from '../types';
 import { appendSvgIcons, createEl } from '../utils';
-import { getSelectedDays } from '../store';
 
-const createCheckbox = (
+export const createCheckbox = (
   day: Weekday,
   selectedDays: SelectedDaysValue,
   role: 'work' | 'laundry'
@@ -20,8 +20,32 @@ const createCheckbox = (
   checkbox.checked = selectedDays.has(day);
 
   label.append(checkbox, day);
-  
+
   return { label, checkbox };
+};
+
+export const createWeeklyCheckboxFrag = () => {
+  const selectedWorkDays = getSelectedDays(SelectedDaysKey.WORK);
+  const selectedLaundryDays = getSelectedDays(SelectedDaysKey.LAUNDRY);
+
+  const workCheckboxesFrag = document.createDocumentFragment();
+  const laundryCheckboxesFrag = document.createDocumentFragment();
+
+  WEEKDAYS.forEach((day) => {
+    const { label: workLabel } = createCheckbox(day, selectedWorkDays, 'work');
+    const { label: laundryLabel, checkbox: laundryCheckbox } = createCheckbox(
+      day,
+      selectedLaundryDays,
+      'laundry'
+    );
+
+    laundryCheckbox.disabled = !selectedWorkDays.has(day);
+
+    workCheckboxesFrag.appendChild(workLabel);
+    laundryCheckboxesFrag.appendChild(laundryLabel);
+  });
+
+  return { workCheckboxesFrag, laundryCheckboxesFrag };
 };
 
 export const createStaffSelectChildren = async (staffs: Staff[]) => {
@@ -91,23 +115,10 @@ export const createApplyWorkChildren = (
   const laundryContainer = createEl('div', { id: 'laundry-container' });
 
   syncSelectedDays(staffName, scheduleData);
-
-  const selectedWorkDays = getSelectedDays(SelectedDaysKey.WORK);
-  const selectedLaundryDays = getSelectedDays(SelectedDaysKey.LAUNDRY);
-
-  WEEKDAYS.forEach((day) => {
-    const { label: workLabel } = createCheckbox(day, selectedWorkDays, 'work');
-    const { label: laundryLabel, checkbox: laundryCheckbox } = createCheckbox(
-      day,
-      selectedLaundryDays,
-      'laundry'
-    );
-
-    laundryCheckbox.disabled = !selectedWorkDays.has(day);
-
-    workDayContainer.appendChild(workLabel);
-    laundryContainer.appendChild(laundryLabel);
-  });
+  const { workCheckboxesFrag, laundryCheckboxesFrag } =
+    createWeeklyCheckboxFrag();
+  workDayContainer.appendChild(workCheckboxesFrag);
+  laundryContainer.appendChild(laundryCheckboxesFrag);
 
   const submitButtonContainer = createEl('div', {
     id: 'submit-button-container',
