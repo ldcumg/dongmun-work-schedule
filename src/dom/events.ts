@@ -2,6 +2,7 @@ import { fetchStaffs, resetSchedule, submitSelectedDays } from '../api';
 import {
   clearStaffButtonClasses,
   getElement,
+  isAfterSunday4PM,
   isWeekday,
   toggleStaffButtonClass,
 } from '../utils';
@@ -236,11 +237,10 @@ export const delegateSubmitEvents = (parentNode: HTMLElement) => {
 /** 근무표 초기화 버튼 이벤트 */
 export const bindResetScheduleEvent = (resetButton: HTMLButtonElement) => {
   resetButton.addEventListener('click', async () => {
-    if (
-      confirm(
-        '일요일 오후 4시 이후에 초기화해주세요.\n근무표를 초기화하시겠습니까?'
-      )
-    ) {
+    if (!isAfterSunday4PM(new Date()))
+      return alert('일요일 오후 4시 이후에 초기화해주세요.');
+    
+    if (confirm('근무표를 초기화하시겠습니까?')) {
       const workDayContainer = getElement('#workday-container', HTMLDivElement);
       const laundryContainer = getElement('#laundry-container', HTMLDivElement);
 
