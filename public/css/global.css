@@ -101,7 +101,7 @@ footer {
   border-radius: 8px;
   display: flex;
   justify-content: space-around;
-  padding: 12px;
+  padding: 12px 20px;
   align-items: center;
 }
 
