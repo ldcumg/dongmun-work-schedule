@@ -16,8 +16,8 @@ import {
   createStaffSelectChildren,
 } from './dom/elements';
 import { fetchStaffs } from './api';
-import { getSavedStaff } from './feature/staff';
 import { setScheduleData } from './store';
+import { getSavedStaff } from './localStorage';
 
 window.addEventListener('DOMContentLoaded', async () => {
   const {

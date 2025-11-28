@@ -1,18 +1,7 @@
-import { STAFF } from '../constants';
 import { deleteDoc, setDoc, updateDoc } from 'firebase/firestore';
-import { staffDoc } from '../firebase';
-import { NEWBIE } from '../constants';
-import { createEl } from '../utils';
-
-export const saveStaff = (name: string, docId: string) =>
-  localStorage.setItem(STAFF, JSON.stringify({ name, docId }));
-
-export const getSavedStaff = () => {
-  const staffData = localStorage.getItem(STAFF);
-  return staffData ? JSON.parse(staffData) : null;
-};
-
-export const removeSavedStaff = () => localStorage.removeItem(STAFF);
+import { staffDoc } from './firebase';
+import { NEWBIE } from './constants';
+import { createEl } from './utils';
 
 /** DB에 신입 추가 */
 const dbAddNewbie = async (staffContainer: HTMLDivElement, docId: string) => {
