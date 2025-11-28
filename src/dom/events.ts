@@ -11,18 +11,12 @@ import {
   clearSelectedDays,
   getScheduleData,
 } from '../store';
-import {
-  attachNewbie,
-  removeSavedStaff,
-  editStaff,
-  removeStaffByName,
-  saveStaff,
-} from '../feature/staff';
+import { attachNewbie, editStaff, removeStaffByName } from '../service';
 import { createApplyWorkChildren, createStaffSelectChildren } from './elements';
-import { SelectedDaysKey } from '../constants';
-import { renderTotalWorkDays } from './render';
+import { SelectedDays } from '../constants';
 import { remove, set } from 'firebase/database';
 import { scheduleRef } from '../firebase';
+import { removeSavedStaff, saveStaff } from '../localStorage';
 
 export const delegateStaffEvents = (parentNode: HTMLElement) => {
   let editMode: boolean = false;
@@ -200,20 +194,20 @@ export const delegateSubmitEvents = (parentNode: HTMLElement) => {
       if (!laundryCheckbox) return;
 
       target.checked
-        ? selectDay(SelectedDaysKey.WORK, day)
-        : deselectDay(SelectedDaysKey.WORK, day);
+        ? selectDay(SelectedDays.WORK, day)
+        : deselectDay(SelectedDays.WORK, day);
 
       laundryCheckbox.disabled = !target.checked;
       if (!target.checked) {
         laundryCheckbox.checked = false;
-        deselectDay(SelectedDaysKey.LAUNDRY, day);
+        deselectDay(SelectedDays.LAUNDRY, day);
       }
     }
 
     if (role === 'laundry') {
       target.checked
-        ? selectDay(SelectedDaysKey.LAUNDRY, day)
-        : deselectDay(SelectedDaysKey.LAUNDRY, day);
+        ? selectDay(SelectedDays.LAUNDRY, day)
+        : deselectDay(SelectedDays.LAUNDRY, day);
     }
   });
 

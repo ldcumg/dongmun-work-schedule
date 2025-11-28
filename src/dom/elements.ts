@@ -1,5 +1,5 @@
-import { SelectedDaysKey, SVG_ICON_PATH, WEEKDAYS } from '../constants';
-import { syncSelectedDays } from '../feature/schedule';
+import { SelectedDays, SVG_ICON_PATH, WEEKDAYS } from '../constants';
+import { syncSelectedDays } from '../store';
 import { getSelectedDays } from '../store';
 import type { ScheduleData, SelectedDaysValue, Staff, Weekday } from '../types';
 import { appendSvgIcons, createEl } from '../utils';
@@ -92,8 +92,8 @@ export const createApplyWorkChildren = (
 
   syncSelectedDays(staffName, scheduleData);
 
-  const selectedWorkDays = getSelectedDays(SelectedDaysKey.WORK);
-  const selectedLaundryDays = getSelectedDays(SelectedDaysKey.LAUNDRY);
+  const selectedWorkDays = getSelectedDays(SelectedDays.WORK);
+  const selectedLaundryDays = getSelectedDays(SelectedDays.LAUNDRY);
 
   WEEKDAYS.forEach((day) => {
     const { label: workLabel } = createCheckbox(day, selectedWorkDays, 'work');
