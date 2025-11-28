@@ -72,8 +72,7 @@ window.addEventListener('DOMContentLoaded', async () => {
   if (!savedStaff && isIos && !isInStandalone) {
     const iosInstallTip = createElement('p', {
       id: 'ios-install-tip',
-      textContent:
-        "설치하려면 '공유 → 홈 화면에 추가' 를 선택하세요.",
+      textContent: "설치하려면 '공유 → 홈 화면에 추가' 를 선택하세요.",
     });
     createModal(iosInstallTip);
   }
