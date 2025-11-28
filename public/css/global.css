@@ -149,6 +149,13 @@ footer {
   height: 16px;
 }
 
+.install-tip {
+  color: black;
+  word-break: keep-all;
+  line-height: 1.4;
+  margin: 4px 0px;
+}
+
 #select-section {
   background-color: rgba(80, 78, 73, 0.9);
   display: flex;
@@ -225,11 +232,4 @@ footer {
   justify-content: space-between;
   align-items: center;
   margin-top: 16px;
-}
-
-#ios-install-tip {
-  color: black;
-  word-break: keep-all;
-  line-height: 1.4;
-  margin: 4px 0px;
 }

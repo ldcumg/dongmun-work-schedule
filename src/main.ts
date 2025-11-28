@@ -66,12 +66,21 @@ window.addEventListener('DOMContentLoaded', async () => {
     init && (init = false);
   });
 
+  const isKakaoInApp = /KAKAOTALK/i.test(navigator.userAgent);
+  if (!savedStaff && isKakaoInApp) {
+    const androidInstallTip = createElement('p', {
+      className: 'install-tip',
+      textContent: '설치하려면 브라우저로 접속해주세요.',
+    });
+    createModal(androidInstallTip);
+  }
+
   const isIos = /iPhone|iPad/.test(navigator.userAgent);
   const isInStandalone =
     'standalone' in window.navigator && window.navigator.standalone;
-  if (!savedStaff && isIos && !isInStandalone) {
+  if (!savedStaff && !isKakaoInApp && isIos && !isInStandalone) {
     const iosInstallTip = createElement('p', {
-      id: 'ios-install-tip',
+      className: 'install-tip',
       textContent: "설치하려면 Safari '공유 → 홈 화면에 추가' 를 선택하세요.",
     });
     createModal(iosInstallTip);
