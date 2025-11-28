@@ -103,6 +103,7 @@ footer {
   justify-content: space-around;
   padding: 12px 20px;
   align-items: center;
+  gap: 8px;
 }
 
 .modal>button {
@@ -230,5 +231,5 @@ footer {
   color: black;
   word-break: keep-all;
   line-height: 1.4;
-  margin: 4px;
+  margin: 4px 0px;
 }
