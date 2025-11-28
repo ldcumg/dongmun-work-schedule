@@ -15,13 +15,13 @@ export const fetchStaffs = async () =>
 export const submitSelectedDays = async (name: string, docId: string) => {
   try {
     const selectedWorkDays = getSelectedDays(SelectedDaysKey.WORK);
-    await update(scheduleRef(name), {
-      work: [...selectedWorkDays],
-      laundry: [...getSelectedDays(SelectedDaysKey.LAUNDRY)],
-    });
     const weekKey = getWeekKey();
     await updateDoc(staffDoc(docId), {
       [`workDays.${weekKey}`]: selectedWorkDays.size,
+    });
+    await update(scheduleRef(name), {
+      work: [...selectedWorkDays],
+      laundry: [...getSelectedDays(SelectedDaysKey.LAUNDRY)],
     });
   } catch (err) {
     alert('스케줄 제출 중 오류가 발생했습니다.');
