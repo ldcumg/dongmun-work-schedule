@@ -73,7 +73,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     const iosInstallTip = createElement('p', {
       id: 'ios-install-tip',
       textContent:
-        "이 앱을 홈 화면에 추가하려면 '메뉴 → 홈 화면에 추가' 를 선택하세요.",
+        "설치하려면 '공유 → 홈 화면에 추가' 를 선택하세요.",
     });
     createModal(iosInstallTip);
   }
