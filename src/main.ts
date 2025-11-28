@@ -66,20 +66,34 @@ window.addEventListener('DOMContentLoaded', async () => {
     init && (init = false);
   });
 
+  const isIos = /iPhone|iPad/.test(navigator.userAgent);
+  const isInStandalone =
+    'standalone' in window.navigator && window.navigator.standalone;
+  if (!savedStaff && isIos && !isInStandalone) {
+    const iosInstallTip = createElement('p', {
+      id: 'ios-install-tip',
+      textContent:
+        "이 앱을 홈 화면에 추가하려면 '메뉴 → 홈 화면에 추가' 를 선택하세요.",
+    });
+    createModal(iosInstallTip);
+  }
+
   window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
-    const deferredPrompt = e;
-    const installBtn = createElement('button', {
-      type: 'button',
-      id: 'install-btn',
-      textContent: '설치',
-    });
-    const closeModal = createModal(installBtn);
+    if (!savedStaff) {
+      const deferredPrompt = e;
+      const installBtn = createElement('button', {
+        type: 'button',
+        id: 'install-btn',
+        textContent: '설치',
+      });
+      const closeModal = createModal(installBtn);
 
-    installBtn.addEventListener('click', async () => {
-      await deferredPrompt.prompt();
-      await deferredPrompt.userChoice;
-      closeModal();
-    });
+      installBtn.addEventListener('click', async () => {
+        await deferredPrompt.prompt();
+        await deferredPrompt.userChoice;
+        closeModal();
+      });
+    }
   });
 });
