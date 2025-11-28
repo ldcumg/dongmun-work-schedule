@@ -32,22 +32,7 @@ window.addEventListener('DOMContentLoaded', async () => {
 
   let init = true;
   const savedStaff = getSavedStaff();
-  const staffs = await fetchStaffs();
-
-  onValue(scheduleRef(), async (snapshot: DataSnapshot) => {
-    const scheduleData = snapshot.val();
-    setScheduleData(scheduleData);
-    renderSchedule(scheduleContainer, numberWorkContainer, scheduleData);
-    if (init && savedStaff) {
-      const applyWorkChildren = createApplyWorkChildren(
-        savedStaff.name,
-        savedStaff.docId,
-        scheduleData
-      );
-      selectSection.append(...applyWorkChildren);
-    }
-    init && (init = false);
-  });
+  let staffs = await fetchStaffs();
 
   if (!savedStaff) {
     const staffSelectChildren = await createStaffSelectChildren(staffs);
@@ -61,4 +46,22 @@ window.addEventListener('DOMContentLoaded', async () => {
   delegateSubmitEvents(selectSection);
 
   bindCopyScheduleEvent(copyButton, scheduleDisplay);
+
+  onValue(scheduleRef(), async (snapshot: DataSnapshot) => {
+    const scheduleData = snapshot.val();
+    setScheduleData(scheduleData);
+    renderSchedule(scheduleContainer, numberWorkContainer, scheduleData);
+    init || (staffs = await fetchStaffs());
+    console.log('[ ㏒ ] staffs =>', staffs);
+    renderTotalWorkDays(cumulationContainer, staffs);
+    if (init && savedStaff) {
+      const applyWorkChildren = createApplyWorkChildren(
+        savedStaff.name,
+        savedStaff.docId,
+        scheduleData
+      );
+      selectSection.append(...applyWorkChildren);
+    }
+    init && (init = false);
+  });
 });

@@ -96,7 +96,7 @@ function getMonday(date: Date): Date {
 }
 
 /** 일요일 16시 이후인지 체크 */
-export function isAfterSunday4PM(date: Date): boolean {
+function isAfterSunday4PM(date: Date): boolean {
   const monday = getMonday(date);
   const sunday4PM = new Date(monday);
   sunday4PM.setDate(monday.getDate() + 6);

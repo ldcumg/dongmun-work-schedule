@@ -227,13 +227,6 @@ export const delegateSubmitEvents = (parentNode: HTMLElement) => {
     if (!name.dataset.docId) return;
 
     await submitSelectedDays(name.textContent, name.dataset.docId);
-
-    const cumulationContainer = getElement(
-      '#cumulation-container',
-      HTMLDivElement
-    );
-    const staffs = await fetchStaffs();
-    renderTotalWorkDays(cumulationContainer, staffs);
   });
 };
 
