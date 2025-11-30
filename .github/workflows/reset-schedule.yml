@@ -3,39 +3,32 @@ name: Reset schedule
 on:
   schedule:
     - cron: '0 7 * * 0' # 매주 일요일 16시
-  workflow_dispatch: # 수동 실행 옵션
+  workflow_dispatch:
 
 jobs:
   reset-schedule:
     runs-on: ubuntu-latest
-
     steps:
-      # 코드 가져오기
       - uses: actions/checkout@v3
 
-      # Node.js 설치
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 20
 
-      # pnpm 설치
       - name: Install pnpm
         run: npm install -g pnpm
 
-      # 프로젝트 의존성 설치
       - name: Install dependencies
         run: pnpm install
 
-      # pnpm 빌드 허용
       - name: Approve PNPM builds
         run: pnpm approve-builds
 
-      # 스크립트 실행 (로그 확인 가능)
       - name: Reset schedule
         env:
           FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
         run: |
           echo "=== Starting RTDB reset script ==="
-          pnpm exec ts-node scripts/reset-schedule.ts
+          pnpm exec tsgo scripts/reset-schedule.ts
           echo "=== Finished RTDB reset script ==="
