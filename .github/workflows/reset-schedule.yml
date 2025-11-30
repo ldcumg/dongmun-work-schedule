@@ -24,4 +24,4 @@ jobs:
         env:
           FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
         run: |
-          pnpm dlx tsx scripts/reset-schedule.ts
+          npx pnpm dlx tsx scripts/reset-schedule.ts
