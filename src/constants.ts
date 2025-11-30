@@ -11,11 +11,9 @@ export const WEEKDAYS = Object.freeze([
 ] as const);
 
 export const SVG_ICON_PATH = Object.freeze({
-  check: createSvgPath('check'),
   plus: createSvgPath('plus'),
   edit: createSvgPath('edit'),
   trash: createSvgPath('trash'),
-  x: createSvgPath('circle-x'),
 } as const);
 
 export enum SelectedDays {
