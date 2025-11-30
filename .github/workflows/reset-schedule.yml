@@ -3,7 +3,6 @@ name: Reset schedule
 on:
   schedule:
     - cron: '0 7 * * 0' # 일요일 16시
-  workflow_dispatch:
 
 jobs:
   reset-schedule:
