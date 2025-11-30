@@ -8,13 +8,18 @@ on:
 jobs:
   reset-schedule:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v3
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: 'pnpm'
 
       - name: Install dependencies
         run: pnpm install
@@ -22,4 +27,4 @@ jobs:
       - name: Reset schedule
         env:
           FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
-        run: npx ts-node scripts/reset-schedule.ts
+        run: pnpm ts-node scripts/reset-schedule.ts
