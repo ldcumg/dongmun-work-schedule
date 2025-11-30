@@ -10,32 +10,32 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 코드 가져오기
+      # 1️⃣ 코드 가져오기
       - uses: actions/checkout@v3
 
-      # Node.js 설치
+      # 2️⃣ Node.js 설치
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 20
 
-      # pnpm 설치
+      # 3️⃣ pnpm 설치
       - name: Install pnpm
         run: npm install -g pnpm
 
-      # 프로젝트 의존성 설치
+      # 4️⃣ 프로젝트 의존성 설치
       - name: Install dependencies
         run: pnpm install
 
-      # PNPM 빌드 승인
+      # 5️⃣ PNPM 빌드 스크립트 승인
       - name: Approve PNPM builds
         run: pnpm approve-builds
 
-      # 스크립트 실행
+      # 6️⃣ RTDB 초기화 스크립트 실행
       - name: Reset schedule
         env:
           FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
         run: |
           echo "=== Starting RTDB reset script ==="
-          pnpm exec tsgo scripts/reset-schedule.ts
+          npx tsgo scripts/reset-schedule.ts
           echo "=== Finished RTDB reset script ==="
