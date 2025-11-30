@@ -3,7 +3,7 @@ name: Reset schedule
 on:
   schedule:
     - cron: '0 7 * * 0' # 매주 일요일 16시
-  workflow_dispatch: # 수동 실행 옵션
+  workflow_dispatch: # 수동 실행 가능
 
 jobs:
   reset-schedule:
@@ -27,12 +27,12 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      # 5️⃣ Firebase Admin SDK 빌드 승인
+      # 5️⃣ pnpm 빌드 허용
       - name: Approve PNPM builds
         run: pnpm approve-builds
 
       # 6️⃣ RTDB 초기화 스크립트 실행
-      - name: Reset schedule
+      - name: Reset RTDB
         env:
           FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
         run: |
