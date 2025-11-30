@@ -24,7 +24,9 @@ jobs:
         run: pnpm install
 
       - name: Approve PNPM builds
-        run: pnpm approve-builds --all
+        run: pnpm approve-builds
+        env:
+          PNPM_ALLOW_EXEC: true
 
       - name: Reset schedule
         env:
