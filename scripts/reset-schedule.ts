@@ -11,6 +11,8 @@ admin.initializeApp({
     'https://dongmun-work-schedule-default-rtdb.asia-southeast1.firebasedatabase.app',
 });
 
+console.log('script start');
+
 (async () => {
   const db = admin.database();
   console.log('Deleting schedule...');
