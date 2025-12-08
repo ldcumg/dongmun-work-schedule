@@ -22,5 +22,4 @@ jobs:
       - name: Reset schedule
         env:
           FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
-        run: |
-          npx pnpm dlx tsgo scripts/reset-schedule.ts
+        run: npx pnpm dlx tsgo scripts/reset-schedule.ts

@@ -47,7 +47,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     setStaffData(sortedStaff);
     setScheduleData(schedule);
 
-    init
+    savedStaff && init
       ? syncSelectedDays(savedStaff.name, schedule)
       : (savedStaff = getSavedStaff());
 
