@@ -89,7 +89,7 @@ export function toggleStaffButtonClass(
   });
 }
 
-export function newbieName() {
+export function generateNewbieName() {
   const staffs = getStaffData();
 
   const duplicates = staffs.filter((staff) =>

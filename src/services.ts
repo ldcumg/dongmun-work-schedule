@@ -1,14 +1,16 @@
-import { push, set, update, remove } from 'firebase/database';
-import { scheduleRef, staffRef } from './firebase';
+import { ScheduleData } from './types';
+import { push, set, update } from 'firebase/database';
+import { staffRef } from './firebase';
 import { rootRef } from './firebase';
 import { getScheduleData, getSelectedDays } from './store';
 import { Firebase, SelectedDays } from './constants';
-import { getWeekKey } from './utils';
+import { getWeekKey, generateNewbieName } from './utils';
 
 /** 신입 추가 */
-export const addNewbie = async (name: string) =>
+export const addNewbie = async () => {
+  const name = generateNewbieName();
   await set(push(staffRef()), { name });
-
+};
 /** staff 이름 변경 */
 export const changeStaffName = async (
   staffKey: string,
@@ -28,8 +30,18 @@ export const changeStaffName = async (
 };
 
 /** staff 삭제 */
-export const removeStaff = async (staffKey: string) =>
-  await remove(staffRef(staffKey));
+export const removeStaff = async (
+  staffKey: string,
+  targetName: string,
+  scheduleData: ScheduleData
+) => {
+  const updates: Record<string, unknown> = {
+    [`staff/${staffKey}`]: null,
+  };
+  scheduleData[targetName] && (updates[`schedule/${targetName}`] = null);
+
+  await update(rootRef, updates);
+};
 
 /** 근무 제출 */
 export const submitSelectedDays = async (name: string, staffKey: string) => {
