@@ -16,6 +16,7 @@ import { setScheduleData, setStaffData, syncSelectedDays } from './store';
 import { getSavedStaff } from './localStorage';
 import { createElement } from './utils';
 import { createModal } from './modal';
+import type { ScheduleData, StaffResponse } from './types';
 
 window.addEventListener('DOMContentLoaded', async () => {
   const {
@@ -38,13 +39,17 @@ window.addEventListener('DOMContentLoaded', async () => {
 
   bindCopyScheduleEvent(copyButton, scheduleDisplay);
 
-  onValue(rootRef, async (snapshot: DataSnapshot) => {
-    const { staff, schedule } = snapshot.val();
-    const sortedStaff = Object.keys(staff)
-      .sort()
-      .map((key) => ({ staffKey: key, ...staff[key] }));
+  onValue(rootRef, (snapshot: DataSnapshot) => {
+    const {
+      staff,
+      schedule,
+    }: { staff: StaffResponse; schedule: ScheduleData } = snapshot.val();
+    const staffArray = Object.entries(staff).map(([staffKey, staffData]) => ({
+      staffKey,
+      ...staffData,
+    }));
 
-    setStaffData(sortedStaff);
+    setStaffData(staffArray);
     setScheduleData(schedule);
 
     savedStaff && init
@@ -52,11 +57,11 @@ window.addEventListener('DOMContentLoaded', async () => {
       : (savedStaff = getSavedStaff());
 
     renderSchedule(scheduleContainer, numberWorkContainer, schedule);
-    renderTotalWorkDays(cumulationContainer, sortedStaff);
+    renderTotalWorkDays(cumulationContainer, staffArray);
 
     savedStaff
       ? renderApplySection(selectSection, savedStaff.name, savedStaff.staffKey)
-      : renderStaffSection(selectSection, sortedStaff);
+      : renderStaffSection(selectSection, staffArray);
 
     init = false;
   });

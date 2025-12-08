@@ -10,11 +10,16 @@ export type ScheduleData = Record<
   }
 >;
 
-export type StaffData = {
-  staffKey: string;
+type StaffInfo = {
   name: string;
   workDays?: Record<string, number>;
 };
+
+export type StaffResponse = Record<string, StaffInfo>;
+
+export type StaffData = {
+  staffKey: string;
+} & StaffInfo;
 
 export type SelectedDays = {
   work: Set<Weekday>;
