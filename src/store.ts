@@ -38,7 +38,7 @@ export const clearSelectedDays = () => {
 
 /** 선택된 날들을 스케줄 데이터에서 동기화 */
 export const syncSelectedDays = (name: string, scheduleData: ScheduleData) => {
-  if (name && scheduleData?.[name]) {
+  if (name && scheduleData[name]) {
     const { work, laundry } = scheduleData[name];
 
     work && work.forEach((day) => selectDay(SelectedDays.WORK, day));

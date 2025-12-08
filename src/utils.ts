@@ -9,27 +9,27 @@ export function createElement<K extends keyof HTMLElementTagNameMap>(
     events?: Record<string, EventListenerOrEventListenerObject>;
   }
 ) {
-  const el = document.createElement(tag);
+  const element = document.createElement(tag);
 
   if (options) {
     const { dataset, events, ...rest } = options;
 
-    Object.assign(el, rest);
+    Object.assign(element, rest);
 
     if (dataset) {
       for (const key in dataset) {
-        el.dataset[key] = dataset[key];
+        element.dataset[key] = dataset[key];
       }
     }
 
     if (events) {
       for (const key in events) {
-        el.addEventListener(key, events[key]);
+        element.addEventListener(key, events[key]);
       }
     }
   }
 
-  return el;
+  return element;
 }
 
 export function getElement<T extends HTMLElement>(
@@ -89,7 +89,12 @@ export function toggleStaffButtonClass(
   });
 }
 
-export function generateNewbieName() {
+export function isWeekday(v: string | undefined): v is Weekday {
+  if (!v) return false;
+  return (WEEKDAYS as readonly string[]).includes(v);
+}
+
+export function getNewbieName() {
   const staffs = getStaffData();
 
   const duplicates = staffs.filter((staff) =>
@@ -97,11 +102,6 @@ export function generateNewbieName() {
   ).length;
 
   return duplicates > 0 ? `${NEWBIE}${duplicates + 1}` : NEWBIE;
-}
-
-export function isWeekday(v: string | undefined): v is Weekday {
-  if (!v) return false;
-  return (WEEKDAYS as readonly string[]).includes(v);
 }
 
 /** 이번 주 월요일 구하기 */
@@ -114,7 +114,7 @@ function getMonday(date: Date): Date {
   return d;
 }
 
-/** 일요일 14시 이후인지 체크 */
+/** 일요일 14시 이후인 지 확인 */
 function isAfterSunday2PM(date: Date): boolean {
   const monday = getMonday(date);
   const sunday2PM = new Date(monday);
