@@ -174,7 +174,7 @@ footer {
   flex-direction: row;
   align-items: center;
   box-sizing: border-box;
-  padding-right: 8px;
+  padding: 0 8px;
 }
 
 #name-input {

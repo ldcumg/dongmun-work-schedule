@@ -15,10 +15,11 @@ import {
 } from '../store';
 import {
   addNewbie,
+  changeScheduleName,
   changeStaffName,
   removeStaff,
   submitSelectedDays,
-} from '../api';
+} from '../services';
 import { renderApplySection, renderStaffSection } from './render';
 import { SelectedDays } from '../constants';
 import { remove } from 'firebase/database';
@@ -97,7 +98,7 @@ export const delegateStaffEvents = (parentNode: HTMLElement) => {
         if (confirm(`${targetName}을(를) 삭제하시겠습니까?`)) {
           await removeStaff(staffKey);
           Object.keys(scheduleData).includes(targetName) &&
-            remove(scheduleRef(targetName));
+            (await remove(scheduleRef(targetName)));
           deleteMode = false;
           clearStaffButtonClasses(staffButtons, 'delete');
         }
@@ -122,6 +123,7 @@ export const delegateStaffEvents = (parentNode: HTMLElement) => {
     if (!newName) return;
 
     await changeStaffName(editingTarget.dataset.staffKey, newName);
+    await changeScheduleName(editingTarget.textContent, newName);
 
     editingTarget.textContent = newName;
     editingTarget.classList.remove('editing');
