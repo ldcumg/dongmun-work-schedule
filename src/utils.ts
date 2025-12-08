@@ -95,7 +95,7 @@ export function newbieName() {
   const duplicates = staffs.filter((staff) =>
     staff.name.startsWith(NEWBIE)
   ).length;
-  
+
   return duplicates > 0 ? `${NEWBIE}${duplicates + 1}` : NEWBIE;
 }
 
@@ -114,13 +114,13 @@ function getMonday(date: Date): Date {
   return d;
 }
 
-/** 일요일 16시 이후인지 체크 */
-function isAfterSunday4PM(date: Date): boolean {
+/** 일요일 14시 이후인지 체크 */
+function isAfterSunday2PM(date: Date): boolean {
   const monday = getMonday(date);
-  const sunday4PM = new Date(monday);
-  sunday4PM.setDate(monday.getDate() + 6);
-  sunday4PM.setHours(16, 0, 0, 0);
-  return date >= sunday4PM;
+  const sunday2PM = new Date(monday);
+  sunday2PM.setDate(monday.getDate() + 6);
+  sunday2PM.setHours(14, 0, 0, 0);
+  return date >= sunday2PM;
 }
 
 /** 주간 범위 반환 */
@@ -131,21 +131,21 @@ function getWeekRange(baseMonday: Date): [Date, Date] {
   return [monday, sunday];
 }
 
-/** 일요일 16시를 기준으로 주간 범위 반환 */
+/** 일요일 14시를 기준으로 주간 범위 반환 */
 export function getSmartWeekRange(): [Date, Date] {
   const date = new Date();
   const thisWeekMonday = getMonday(date);
   const nextWeekMonday = new Date(thisWeekMonday);
   nextWeekMonday.setDate(thisWeekMonday.getDate() + 7);
 
-  return isAfterSunday4PM(date)
+  return isAfterSunday2PM(date)
     ? getWeekRange(nextWeekMonday) // 다음 주
     : getWeekRange(thisWeekMonday); // 이번 주
 }
 
 /**
  * 주차 키 반환
- * @example "2023-W47"
+ * @example "2025-W47"
  *  */
 export function getWeekKey(): string {
   // Smart Week를 기준으로 계산
