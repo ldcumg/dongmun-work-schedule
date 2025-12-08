@@ -1,5 +1,6 @@
 import {
   clearStaffButtonClasses,
+  generateNewbieName,
   getElement,
   isWeekday,
   toggleStaffButtonClass,
@@ -46,7 +47,9 @@ export const delegateStaffEvents = (parentNode: HTMLElement) => {
           editMode = deleteMode = false;
           nameForm.hidden || (nameForm.hidden = true);
           clearStaffButtonClasses(staffButtons, 'edit', 'delete');
-          if (confirm(`${name}을(를) 추가하시겠습니까?`)) await addNewbie();
+          const newbieName = generateNewbieName();
+          if (confirm(`${newbieName}을(를) 추가하시겠습니까?`))
+            await addNewbie(newbieName);
           break;
         case 1: // 편집
           editMode = !editMode;

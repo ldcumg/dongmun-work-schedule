@@ -4,13 +4,12 @@ import { staffRef } from './firebase';
 import { rootRef } from './firebase';
 import { getScheduleData, getSelectedDays } from './store';
 import { Firebase, SelectedDays } from './constants';
-import { getWeekKey, generateNewbieName } from './utils';
+import { getWeekKey } from './utils';
 
 /** 신입 추가 */
-export const addNewbie = async () => {
-  const name = generateNewbieName();
+export const addNewbie = async (name: string) =>
   await set(push(staffRef()), { name });
-};
+
 /** staff 이름 변경 */
 export const changeStaffName = async (
   staffKey: string,
