@@ -11,7 +11,8 @@ import { createCheckbox } from './elements';
 
 export const renderStaffSection = async (
   selectSection: HTMLElement,
-  staffs: StaffData[]
+  staffs: StaffData[],
+  init?: boolean
 ) => {
   const controlContainer = createElement('div', { id: 'control-container' });
   const svgContainer = createElement('div', { id: 'svg-container' });
@@ -48,13 +49,16 @@ export const renderStaffSection = async (
     staffContainer.appendChild(staffButton);
   });
 
-  selectSection.replaceChildren(controlContainer, staffContainer);
+  init
+    ? selectSection.append(controlContainer, staffContainer)
+    : selectSection.replaceChildren(controlContainer, staffContainer);
 };
 
 export const renderApplySection = (
   selectSection: HTMLElement,
   staffName: string,
-  staffKey: string
+  staffKey: string,
+  init?: boolean
 ) => {
   const nameContainer = createElement('div', { id: 'name-container' });
 
@@ -113,7 +117,9 @@ export const renderApplySection = (
     submitButtonContainer
   );
 
-  selectSection.replaceChildren(nameContainer, dayForm);
+  init
+    ? selectSection.append(nameContainer, dayForm)
+    : selectSection.replaceChildren(nameContainer, dayForm);
 };
 
 /** 이번주 근무 기간 렌더링 */

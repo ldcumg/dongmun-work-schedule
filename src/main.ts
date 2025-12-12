@@ -60,8 +60,13 @@ window.addEventListener('DOMContentLoaded', async () => {
     renderTotalWorkDays(cumulationContainer, staffArray);
 
     savedStaff
-      ? renderApplySection(selectSection, savedStaff.name, savedStaff.staffKey)
-      : renderStaffSection(selectSection, staffArray);
+      ? renderApplySection(
+          selectSection,
+          savedStaff.name,
+          savedStaff.staffKey,
+          init
+        )
+      : renderStaffSection(selectSection, staffArray, init);
 
     init = false;
   });
