@@ -3,6 +3,7 @@ name: Reset schedule
 on:
   schedule:
     - cron: '0 5 * * 0' # 일요일 14시
+  workflow_dispatch:
 
 jobs:
   reset-schedule:
@@ -22,4 +23,4 @@ jobs:
       - name: Reset schedule
         env:
           FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
-        run: npx pnpm dlx tsgo scripts/reset-schedule.ts
+        run: npx pnpm dlx tsx scripts/reset-schedule.ts
