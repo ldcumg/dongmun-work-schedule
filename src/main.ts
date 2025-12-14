@@ -42,7 +42,7 @@ window.addEventListener('DOMContentLoaded', async () => {
   onValue(rootRef, (snapshot: DataSnapshot) => {
     const {
       staff,
-      schedule,
+      schedule = {},
     }: { staff: StaffResponse; schedule: ScheduleData } = snapshot.val();
     const staffArray = Object.entries(staff).map(([staffKey, staffData]) => ({
       staffKey,
