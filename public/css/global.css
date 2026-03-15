@@ -50,10 +50,6 @@ h2 {
   margin-bottom: 16px;
 }
 
-h3 {
-  margin: 16px 0;
-}
-
 section {
   border-radius: 16px;
   padding: 32px;
@@ -154,6 +150,10 @@ footer {
   word-break: keep-all;
   line-height: 1.4;
   margin: 4px 0px;
+}
+
+.schedule-label {
+  margin: 16px 0;
 }
 
 #select-section {
