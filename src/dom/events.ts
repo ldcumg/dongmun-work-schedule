@@ -205,8 +205,10 @@ export const bindCopyScheduleEvent = (
   target: HTMLDivElement,
 ) => {
   button.addEventListener('click', () => {
+    const textToCopy = target.innerText.replace(/\n{3,}/g, '\n\n').trimEnd();
+
     navigator.clipboard
-      .writeText(target.innerText)
+      .writeText(textToCopy)
       .then(() => {
         button.textContent = '복사됨';
         setTimeout(() => {
