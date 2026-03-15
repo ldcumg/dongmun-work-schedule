@@ -121,7 +121,7 @@ export const delegateStaffEvents = (parentNode: HTMLElement) => {
     await changeStaffName(
       editingTarget.dataset.staffKey,
       editingTarget.textContent,
-      newName
+      newName,
     );
 
     editingTarget.textContent = newName;
@@ -132,7 +132,7 @@ export const delegateStaffEvents = (parentNode: HTMLElement) => {
     form.hidden = true;
     clearStaffButtonClasses(
       parentNode.querySelectorAll<HTMLButtonElement>('.staff-button'),
-      'edit'
+      'edit',
     );
   });
 };
@@ -164,7 +164,7 @@ export const delegateSubmitEvents = (parentNode: HTMLElement) => {
 
     if (role === 'work') {
       const laundryCheckbox = parentNode.querySelector<HTMLInputElement>(
-        `input[data-role="laundry"][data-day="${day}"]`
+        `input[data-role="laundry"][data-day="${day}"]`,
       );
       if (!laundryCheckbox) return;
 
@@ -202,13 +202,11 @@ export const delegateSubmitEvents = (parentNode: HTMLElement) => {
 /** 근무표 복사 버튼 이벤트 */
 export const bindCopyScheduleEvent = (
   button: HTMLButtonElement,
-  target: HTMLDivElement
+  target: HTMLDivElement,
 ) => {
   button.addEventListener('click', () => {
-    const textToCopy = target.innerText.replace(/\n{3,}/g, '\n\n').trimEnd();
-
     navigator.clipboard
-      .writeText(textToCopy)
+      .writeText(target.innerText)
       .then(() => {
         button.textContent = '복사됨';
         setTimeout(() => {
