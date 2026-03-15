@@ -153,7 +153,9 @@ footer {
 }
 
 .schedule-label {
-  margin: 16px 0;
+  font-size: 18px;
+  margin-top: 4px;
+  margin-bottom: 16px;
 }
 
 #select-section {
