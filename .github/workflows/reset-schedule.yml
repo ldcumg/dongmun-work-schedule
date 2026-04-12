@@ -5,6 +5,9 @@ on:
     - cron: '0 5 * * 0' # 일요일 14시
   workflow_dispatch:
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   reset-schedule:
     runs-on: ubuntu-latest
