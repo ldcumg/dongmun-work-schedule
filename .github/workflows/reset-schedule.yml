@@ -3,7 +3,7 @@ name: Reset schedule
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 3 * * 0' # 일요일 12시
+    - cron: '0 2 * * 0' # 일요일 11시
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
