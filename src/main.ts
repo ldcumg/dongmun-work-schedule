@@ -64,7 +64,7 @@ window.addEventListener('DOMContentLoaded', async () => {
           selectSection,
           savedStaff.name,
           savedStaff.staffKey,
-          init
+          init,
         )
       : renderStaffSection(selectSection, staffArray, init);
 
@@ -73,7 +73,7 @@ window.addEventListener('DOMContentLoaded', async () => {
 
   const isKakaoInApp = /KAKAOTALK/i.test(navigator.userAgent);
   if (!savedStaff && isKakaoInApp) {
-    const androidInstallTip = createElement('p', {
+    const androidInstallTip = createElement('span', {
       className: 'install-tip',
       textContent: '설치하려면 브라우저로 접속해주세요.',
     });
@@ -84,7 +84,7 @@ window.addEventListener('DOMContentLoaded', async () => {
   const isInStandalone =
     'standalone' in window.navigator && window.navigator.standalone;
   if (!savedStaff && !isKakaoInApp && isIos && !isInStandalone) {
-    const iosInstallTip = createElement('p', {
+    const iosInstallTip = createElement('span', {
       className: 'install-tip',
       textContent: "설치하려면 Safari '공유 → 홈 화면에 추가' 를 선택하세요.",
     });
