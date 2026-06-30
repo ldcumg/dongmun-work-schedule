@@ -7,7 +7,7 @@ export function createElement<K extends keyof HTMLElementTagNameMap>(
   options?: Partial<HTMLElementTagNameMap[K]> & {
     dataset?: Record<string, string>;
     events?: Record<string, EventListenerOrEventListenerObject>;
-  }
+  },
 ) {
   const element = document.createElement(tag);
 
@@ -34,7 +34,7 @@ export function createElement<K extends keyof HTMLElementTagNameMap>(
 
 export function getElement<T extends HTMLElement>(
   selector: string,
-  type: new () => T
+  type: new () => T,
 ): T {
   const el = document.querySelector(selector);
   if (!(el instanceof type))
@@ -81,7 +81,7 @@ export function clearStaffButtonClasses(
 export function toggleStaffButtonClass(
   buttons: NodeListOf<HTMLButtonElement>,
   className: string,
-  condition: boolean
+  condition: boolean,
 ) {
   buttons.forEach((btn) => {
     if (condition) btn.classList.add(className);
@@ -98,7 +98,7 @@ export function getNewbieName() {
   const staffs = getStaffData();
 
   const duplicates = staffs.filter((staff) =>
-    staff.name.startsWith(NEWBIE)
+    staff.name.startsWith(NEWBIE),
   ).length;
 
   return duplicates > 0 ? `${NEWBIE}${duplicates + 1}` : NEWBIE;
@@ -114,13 +114,13 @@ function getMonday(date: Date): Date {
   return d;
 }
 
-/** 일요일 14시 이후인 지 확인 */
-function isAfterSunday2PM(date: Date): boolean {
+/** 일요일 16시 이후인 지 확인 */
+function isAfterSunday4PM(date: Date): boolean {
   const monday = getMonday(date);
-  const sunday2PM = new Date(monday);
-  sunday2PM.setDate(monday.getDate() + 6);
-  sunday2PM.setHours(14, 0, 0, 0);
-  return date >= sunday2PM;
+  const sunday4PM = new Date(monday);
+  sunday4PM.setDate(monday.getDate() + 6);
+  sunday4PM.setHours(16, 0, 0, 0);
+  return date >= sunday4PM;
 }
 
 /** 주간 범위 반환 */
@@ -131,14 +131,14 @@ function getWeekRange(baseMonday: Date): [Date, Date] {
   return [monday, sunday];
 }
 
-/** 일요일 14시를 기준으로 주간 범위 반환 */
+/** 일요일 16시를 기준으로 주간 범위 반환 */
 export function getSmartWeekRange(): [Date, Date] {
   const date = new Date();
   const thisWeekMonday = getMonday(date);
   const nextWeekMonday = new Date(thisWeekMonday);
   nextWeekMonday.setDate(thisWeekMonday.getDate() + 7);
 
-  return isAfterSunday2PM(date)
+  return isAfterSunday4PM(date)
     ? getWeekRange(nextWeekMonday) // 다음 주
     : getWeekRange(thisWeekMonday); // 이번 주
 }
@@ -158,7 +158,7 @@ export function getWeekKey(): string {
   const firstDayOfYear = new Date(year, 0, 1);
 
   const week = Math.ceil(
-    ((tempDate.getTime() - firstDayOfYear.getTime()) / 86400000 + 1) / 7
+    ((tempDate.getTime() - firstDayOfYear.getTime()) / 86400000 + 1) / 7,
   );
 
   return `${year}-W${week}`;
@@ -167,7 +167,7 @@ export function getWeekKey(): string {
 export function getPeopleForDay(
   scheduleData: ScheduleData,
   category: SelectedDaysKey,
-  day: Weekday
+  day: Weekday,
 ) {
   const people = [];
   for (let name in scheduleData) {
