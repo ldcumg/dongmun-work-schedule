@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "watch": "esbuild src/main.ts --bundle --minify --outfile=public/dist/main.js --watch",
+    "watch": "esbuild src/main.ts --bundle --outfile=public/dist/main.js --watch",
     "typecheck": "tsgo --noEmit",
     "build:bundle": "esbuild src/main.ts --bundle --minify --outfile=public/dist/main.js",
     "build": "pnpm run typecheck && pnpm run build:bundle",
@@ -19,8 +19,8 @@
     "esbuild": "^0.25.12"
   },
   "dependencies": {
-    "firebase": "^12.6.0",
-    "firebase-admin": "^13.6.0"
+    "firebase": "^12.18.0",
+    "firebase-admin": "^13.10.0"
   },
   "pnpm": {
     "onlyBuiltDependencies": [
