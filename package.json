@@ -13,15 +13,15 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "packageManager": "pnpm@10.24.0+sha512.01ff8ae71b4419903b65c60fb2dc9d34cf8bb6e06d03bde112ef38f7a34d6904c424ba66bea5cdcf12890230bf39f9580473140ed9c946fef328b6e5238a345a",
-  "devDependencies": {
-    "@typescript/native-preview": "7.0.0-dev.20251108.1",
-    "esbuild": "^0.25.12"
-  },
   "dependencies": {
     "firebase": "^12.18.0",
-    "firebase-admin": "^13.10.0"
+    "firebase-admin": "^14.3.0"
   },
+  "devDependencies": {
+    "@typescript/native-preview": "7.0.0-dev.20260707.2",
+    "esbuild": "^0.28.2"
+  },
+  "packageManager": "pnpm@12.3.4+sha512.961aa41fb077da3a04a441d9f8e15ebc0c96da8ef710b2eb67bf9ee7cb0610eabd48f1fd85f51cffe73846785fa0f87c56a3a872a1d893f8446741b5cce45457",
   "pnpm": {
     "onlyBuiltDependencies": [
       "esbuild",
