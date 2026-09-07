@@ -1,5 +1,4 @@
 import admin from "firebase-admin";
-import { Firebase } from "../src/constants";
 
 (async () => {
   try {
@@ -23,7 +22,7 @@ import { Firebase } from "../src/constants";
     });
 
     const db = admin.database();
-    await db.ref(Firebase.SCHEDULE).remove();
+    await db.ref("schedule").remove();
     process.exit(0);
   } catch (error) {
     console.error(error);
