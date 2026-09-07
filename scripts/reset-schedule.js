@@ -1,4 +1,5 @@
-import admin from "firebase-admin";
+import { cert, initializeApp } from "firebase-admin/app";
+import { getDatabase } from "firebase-admin/database";
 
 (async () => {
   try {
@@ -15,13 +16,16 @@ import admin from "firebase-admin";
     );
 
     // 3. Firebase 초기화
-    admin.initializeApp({
-      credential: admin.credential.cert(serviceAccount),
+    initializeApp({
+      credential: cert(serviceAccount),
       databaseURL:
         "https://dongmun-work-schedule-default-rtdb.asia-southeast1.firebasedatabase.app",
     });
 
-    const db = admin.database();
+    // 4. Realtime Database 연결
+    const db = getDatabase();
+
+    // 5. 근무표 초기화
     await db.ref("schedule").remove();
     process.exit(0);
   } catch (error) {
