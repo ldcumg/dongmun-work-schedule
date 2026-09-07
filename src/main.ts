@@ -1,24 +1,24 @@
-import { onValue, DataSnapshot } from 'firebase/database';
-import { rootRef } from './firebase';
+import { onValue, DataSnapshot } from "firebase/database";
+import { rootRef } from "./firebase";
 import {
   delegateStaffEvents,
   delegateSubmitEvents,
   bindCopyScheduleEvent,
-} from './dom/events';
+} from "./dom/events";
 import {
   renderSchedule,
   renderTotalWorkDays,
   renderWeekRange,
-} from './dom/render';
-import { initUI } from './dom/init';
-import { renderApplySection, renderStaffSection } from './dom/render';
-import { setScheduleData, setStaffData, syncSelectedDays } from './store';
-import { getSavedStaff } from './localStorage';
-import { createElement } from './utils';
-import { createModal } from './modal';
-import type { ScheduleData, StaffResponse } from './types';
+} from "./dom/render";
+import { initUI } from "./dom/init";
+import { renderApplySection, renderStaffSection } from "./dom/render";
+import { setScheduleData, setStaffData, syncSelectedDays } from "./store";
+import { getSavedStaff } from "./localStorage";
+import { createElement } from "./utils";
+import { createModal } from "./modal";
+import type { ScheduleData, StaffResponse } from "./types";
 
-window.addEventListener('DOMContentLoaded', async () => {
+window.addEventListener("DOMContentLoaded", async () => {
   const {
     selectSection,
     scheduleDisplay,
@@ -73,36 +73,36 @@ window.addEventListener('DOMContentLoaded', async () => {
 
   const isKakaoInApp = /KAKAOTALK/i.test(navigator.userAgent);
   if (!savedStaff && isKakaoInApp) {
-    const androidInstallTip = createElement('span', {
-      className: 'install-tip',
-      textContent: '설치하려면 브라우저로 접속해주세요.',
+    const androidInstallTip = createElement("span", {
+      className: "install-tip",
+      textContent: "설치하려면 브라우저로 접속해주세요.",
     });
     createModal(androidInstallTip);
   }
 
   const isIos = /iPhone|iPad/.test(navigator.userAgent);
   const isInStandalone =
-    'standalone' in window.navigator && window.navigator.standalone;
+    "standalone" in window.navigator && window.navigator.standalone;
   if (!savedStaff && !isKakaoInApp && isIos && !isInStandalone) {
-    const iosInstallTip = createElement('span', {
-      className: 'install-tip',
+    const iosInstallTip = createElement("span", {
+      className: "install-tip",
       textContent: "설치하려면 Safari '공유 → 홈 화면에 추가' 를 선택하세요.",
     });
     createModal(iosInstallTip);
   }
 
-  window.addEventListener('beforeinstallprompt', (e) => {
+  window.addEventListener("beforeinstallprompt", (e) => {
     e.preventDefault();
     if (!savedStaff) {
       const deferredPrompt = e;
-      const installBtn = createElement('button', {
-        type: 'button',
-        id: 'install-btn',
-        textContent: '설치',
+      const installBtn = createElement("button", {
+        type: "button",
+        id: "install-btn",
+        textContent: "설치",
       });
       const closeModal = createModal(installBtn);
 
-      installBtn.addEventListener('click', async () => {
+      installBtn.addEventListener("click", async () => {
         await deferredPrompt.prompt();
         await deferredPrompt.userChoice;
         closeModal();
