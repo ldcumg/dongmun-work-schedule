@@ -1,9 +1,9 @@
-name: Reset schedule
+name: Reset Schedule
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 2 * * 0" # 일요일 11시
+    - cron: "0 1 * * 0" # 일요일 10시
 
 jobs:
   reset-schedule:
